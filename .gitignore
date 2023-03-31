@@ -349,6 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+## .git
+
+.git
 
 ## Zabbix and Database DATA
 docker/ZabbixStack/db/data/*
