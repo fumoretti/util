@@ -1,0 +1,5 @@
+[mariadb]
+character_set_server = utf8mb4
+collation_server = utf8mb4_bin
+innodb_buffer_pool_size=512M
+log_warnings = 1

@@ -76,7 +76,6 @@ services:
         - db
       env_file:
         - ./db/.env/mariadb.env
-      command: --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --log_warnings=1
       #Uncomment and change MEM limits
       #mem_limit: 3000M
       #mem_reservation: 512M
