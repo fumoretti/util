@@ -2,7 +2,8 @@ version: "2.4"
 services:
 
     agent:
-      container_name: zabbix-agent2
+      container_name: server-agent
+      hostname: server-agent
       image: 'zabbix/zabbix-agent2:ubuntu-6.4-latest'
       restart: unless-stopped
       volumes:
@@ -10,33 +11,28 @@ services:
         - /etc/localtime:/etc/localtime:ro
         - ./agent/zabbix-agent.d:/etc/zabbix/zabbix_agentd.d
         - ./agent/var-lib-zabbix:/var/lib/zabbix
-      networks:
-        - server
       env_file:
         - ./agent/.env/zabbix-agent2.env
       depends_on:
         - server
+        - front
       #Uncomment and change MEM limits
       #mem_limit: 64M
       #mem_reservation: 32M
 
     front:
       container_name: zabbix-front
-      image: 'zabbix/zabbix-web-apache-mysql:ubuntu-6.4-latest'
+      hostname: zabbix-front
+      image: 'zabbix/zabbix-web-nginx-mysql:ubuntu-6.4-latest'
       restart: unless-stopped
-      networks:
-        - server
-        - db
       ports:
         - '80:8080'
         - '443:8443'
       volumes:
         - /etc/timezone:/etc/timezone:ro
         - /etc/localtime:/etc/localtime:ro
-        - ./front/etc-zabbix/apache.conf:/etc/zabbix/apache.conf
-        - ./front/etc-zabbix/apache_ssl.conf:/etc/zabbix/apache_ssl.conf
-        - ./front/etc-zabbix/web/certs:/etc/zabbix/web/certs:ro
-        - ./front/etc-ssl/apache2:/etc/ssl/apache2:ro
+        - ./front/etc-ssl:/etc/ssl/nginx:ro
+        - ./front/etc-zabbix-certs:/etc/zabbix/web/certs:ro
       depends_on:
         - server
       env_file:
@@ -47,6 +43,7 @@ services:
 
     server:
       container_name: zabbix-server
+      hostname: zabbix-server
       image: 'zabbix/zabbix-server-mysql:ubuntu-6.4-latest'
       restart: unless-stopped
       volumes:
@@ -54,9 +51,6 @@ services:
         - /etc/localtime:/etc/localtime:ro
         - ./server/usr-lib-zabbix:/usr/lib/zabbix
         - ./server/var-lib-zabbix:/var/lib/zabbix
-      networks:
-        - server
-        - db
       depends_on:
         - db
       env_file:
@@ -67,6 +61,7 @@ services:
 
     db:
       container_name: zabbix-db
+      hostname: zabbix-db
       image: 'mariadb:10.10-jammy'
       restart: unless-stopped
       volumes:
@@ -74,16 +69,11 @@ services:
         - /etc/localtime:/etc/localtime:ro
         - ./db/data:/var/lib/mysql
         - ./db/conf.d:/etc/mysql/conf.d
-      networks:
-        - db
       env_file:
         - ./db/.env/mariadb.env
       #Uncomment and change MEM limits
       #mem_limit: 3000M
       #mem_reservation: 512M
 
-networks:
-    server:
-      driver: bridge
-    db:
-      driver: bridge
+
+
