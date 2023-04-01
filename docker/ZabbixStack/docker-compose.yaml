@@ -3,7 +3,7 @@ services:
 
     agent:
       container_name: zabbix-agent2
-      image: 'zabbix/zabbix-agent2:ubuntu-6.2-latest'
+      image: 'zabbix/zabbix-agent2:ubuntu-6.4-latest'
       restart: unless-stopped
       volumes:
         - /etc/timezone:/etc/timezone:ro
@@ -20,7 +20,7 @@ services:
 
     front:
       container_name: zabbix-front
-      image: 'zabbix/zabbix-web-apache-mysql:ubuntu-6.2-latest'
+      image: 'zabbix/zabbix-web-apache-mysql:ubuntu-6.4-latest'
       restart: unless-stopped
       networks:
         - server
@@ -45,7 +45,7 @@ services:
 
     server:
       container_name: zabbix-server
-      image: 'zabbix/zabbix-server-mysql:ubuntu-6.2-latest'
+      image: 'zabbix/zabbix-server-mysql:ubuntu-6.4-latest'
       restart: unless-stopped
       volumes:
         - /etc/timezone:/etc/timezone:ro
@@ -65,7 +65,7 @@ services:
 
     db:
       container_name: zabbix-db
-      image: 'mariadb:10.8-jammy'
+      image: 'mariadb:10.10-jammy'
       restart: unless-stopped
       volumes:
         - /etc/timezone:/etc/timezone:ro
