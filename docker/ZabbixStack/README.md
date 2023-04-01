@@ -62,7 +62,7 @@ This stack contains default passwords from Zabbix products, please change it asa
 
 ## Fine tune Zabbix Server and Database parameters
 
-On eash service directory i put a env file to easily define and change enviorment variables. Use its to fine tune the stack services. All recommed .d conf directories are mapped to containers and also can be used to fine tune parameters.
+On each service directory i put a env file to easily define and change enviorment variables. Use its to fine tune the stack services. All recommed .d conf directories are mapped to containers and also can be used to fine tune parameters.
 
 ## Take care of .env files permissions
 
