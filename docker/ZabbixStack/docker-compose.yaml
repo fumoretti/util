@@ -16,9 +16,6 @@ services:
       depends_on:
         - server
         - front
-      #Uncomment and change MEM limits
-      #mem_limit: 64M
-      #mem_reservation: 32M
 
     front:
       container_name: zabbix-front
@@ -37,9 +34,6 @@ services:
         - server
       env_file:
         - ./front/.env/zabbix-front.env
-      #Uncomment and change MEM limits
-      #mem_limit: 512M
-      #mem_reservation: 32M
 
     server:
       container_name: zabbix-server
@@ -55,9 +49,6 @@ services:
         - db
       env_file:
         - ./server/.env/zabbix-server.env
-      #Uncomment and change MEM limits
-      #mem_limit: 2048M
-      #mem_reservation: 512M
 
     db:
       container_name: zabbix-db
@@ -71,9 +62,4 @@ services:
         - ./db/conf.d:/etc/mysql/conf.d
       env_file:
         - ./db/.env/mariadb.env
-      #Uncomment and change MEM limits
-      #mem_limit: 3000M
-      #mem_reservation: 512M
-
-
 
