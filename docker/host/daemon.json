@@ -1,0 +1,15 @@
+{
+    "log-driver": "json-file",
+    "log-opts": {
+      "max-size": "128m",
+      "max-file": "30",
+      "labels": "production_status",
+      "env": "os,customer"
+    },
+    "default-address-pools": [
+         {
+             "base": "172.31.0.0/16",
+             "size": 27
+          }
+  ]
+  }

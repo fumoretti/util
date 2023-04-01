@@ -26,8 +26,8 @@ services:
       image: 'zabbix/zabbix-web-nginx-mysql:ubuntu-6.4-latest'
       restart: unless-stopped
       ports:
-        - '80:8080'
-        - '443:8443'
+        - '8080:8080'
+        - '8443:8443'
       volumes:
         - /etc/timezone:/etc/timezone:ro
         - /etc/localtime:/etc/localtime:ro

@@ -2,4 +2,4 @@
 
 A collection of conf and definition files for IT tools like docker, ansible, ShellScript, linux, DevOps...
 
-A more complete README soon. For now, just explore this repository by yourself.
+A more complete README soon. For now, just explore this repository and README.md of each utility directory.
