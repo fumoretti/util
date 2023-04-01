@@ -8,6 +8,8 @@ services:
       volumes:
         - /etc/timezone:/etc/timezone:ro
         - /etc/localtime:/etc/localtime:ro
+        - ./agent/zabbix-agent.d:/etc/zabbix/zabbix_agentd.d
+        - ./agent/var-lib-zabbix:/var/lib/zabbix
       networks:
         - server
       env_file:
