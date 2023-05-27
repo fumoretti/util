@@ -1,0 +1,26 @@
+# ============================== Filebeat modules ==============================
+filebeat.config.modules:
+  path: /usr/share/filebeat/modules.d/*.yml
+  reload.enabled: false
+  #reload.period: 10s
+
+setup.template.name: "filebeat-haproxy"
+setup.template.pattern: "filebeat-haproxy"
+
+# ================================== Outputs ===================================
+# ------------------------------ ElasticSearch Output -------------------------------
+output.elasticsearch:
+  hosts: '192.168.88.245:9200'
+  username: 'elastic'
+  password: 'changeme'
+  index: "filebeat-haproxy-externo"
+
+
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+

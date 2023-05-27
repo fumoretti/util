@@ -1,0 +1,6 @@
+- module: haproxy
+  log:
+    enabled: true
+    var.paths: ["/home/fmoretti/docker/haproxy_HTTP-LB01/logs/haproxy.log"]
+    var.input: "file"
+

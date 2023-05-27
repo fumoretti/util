@@ -1,0 +1,53 @@
+version: '2.4'
+services:
+  haproxy:
+    container_name: http-lb01
+    hostname: http-lb01
+    image: 'haproxy:2.7-alpine'
+    restart: unless-stopped
+    networks:
+      - haproxy
+    ports:
+      - 80:80
+      - 443:443
+      - 8404:8404
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./conf:/usr/local/etc/haproxy:ro
+      - ./certs:/certs:ro
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+      - ./run:/run:rw
+    depends_on:
+      - rsyslog
+
+  rsyslog:
+    container_name: rsyslog-lb01
+    hostname: rsyslog
+    image: 'rsyslog/syslog_appliance_alpine:latest'
+    restart: unless-stopped
+    networks:
+      haproxy:
+        aliases: 
+          - rsyslog
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./logs:/logs
+      - ./conf/rsyslog.conf:/etc/rsyslog.conf:ro
+      - ./scripts/rotate_log.sh:/home/appliance/rotate_log.sh:ro
+
+#  filebeat:
+#    container_name: haproxy-filebeat
+#    hostname: filebeat
+#    image: 'docker.elastic.co/beats/filebeat:8.7.1'
+#    user: root
+#    volumes:
+#      - ./conf/filebeat.yml:/usr/share/filebeat/filebeat.yml
+#      - ./conf/haproxy.yml:/usr/share/filebeat/modules.d/haproxy.yml
+#      - ./logs:/logs:ro
+#    depends_on:
+#      - haproxy
+
+networks:
+  haproxy:
+    name: haproxy
+    external: true

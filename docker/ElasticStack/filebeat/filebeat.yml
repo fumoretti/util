@@ -1,0 +1,56 @@
+# ============================== Filebeat modules ==============================
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+  #reload.period: 10s
+
+setup.template.name: "filebeat-cups"
+setup.template.pattern: "filebeat-cups"
+setup.template.settings:
+  index.number_of_replicas: 0
+  index.lifecycle.name: "haproxy-ilm"
+setup.ilm.overwrite: true
+setup.kibana.host: "http://kibana.local.lan"
+setup.kibana.username: elastic
+setup.kibana.password: changeme
+
+filebeat.inputs:
+- type: log
+  id: cups-access
+  paths:
+    - /var/log/cups/access_log
+  fields_under_root: true
+  processors:
+   - add_tags:
+       tags: [ cups_access ]
+
+- type: log
+  id: cups-error
+  paths:
+    - /var/log/cups/error_log
+  fields_under_root: true
+  processors:
+   - add_tags:
+       tags: [ cups_error ]
+
+setup:
+  template.enabled: true
+  ilm.enabled: true
+# ================================== Outputs ===================================
+# ------------------------------ ElasticSearch Output -------------------------------
+#output.elasticsearch:
+#  hosts: '192.168.88.245:9200'
+#  username: 'elastic'
+#  password: 'changeme'
+#  index: "filebeat-default"
+
+output.logstash:
+  hosts: [ "logstash.local.lan:5044" ]
+
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+#  - add_cloud_metadata: ~
+#  - add_docker_metadata: ~
+#  - add_kubernetes_metadata: ~

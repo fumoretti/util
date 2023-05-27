@@ -1,0 +1,35 @@
+version: '2.4'
+services:
+  webapp1:
+    container_name: hello01
+    image: nginxdemos/hello
+    hostname: hello01
+    restart: unless-stopped
+    networks:
+      - haproxy
+  webapp2:
+    container_name: hello02
+    image: nginxdemos/hello
+    hostname: hello02
+    restart: unless-stopped
+    networks:
+      - haproxy
+  webapp3:
+    container_name: hello03
+    image: nginxdemos/hello
+    hostname: hello03
+    restart: unless-stopped
+    networks:
+      - haproxy
+  webapp4:
+    container_name: hello04
+    image: nginxdemos/hello
+    hostname: hello04
+    restart: unless-stopped
+    networks:
+      - haproxy
+
+networks:
+  haproxy:
+    name: haproxy
+    external: true

@@ -357,3 +357,8 @@ MigrationBackup/
 docker/ZabbixStack/db/data/*
 docker/ZabbixStack/server/usr-lib-zabbix/*
 docker/ZabbixStack/server/var-lib-zabbix/*
+
+## Elastic Haproxy sensitive data
+docker/ElasticStack/ES-DATA
+docker/haproxy_HTTP-LB01/logs
+docker/haproxy_HTTP-LB01/run

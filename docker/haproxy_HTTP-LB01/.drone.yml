@@ -1,0 +1,58 @@
+kind: pipeline
+name: default
+type: docker
+
+steps:
+- name: validate-haproxy-conf
+  image: docker:dind
+  volumes:
+  - name: dockersock
+    path: /var/run
+  commands:
+  - sleep 35
+  - docker run --rm --add-host="rsyslog:127.0.0.1" -v $(pwd)/certs:/certs -v $(pwd)/conf:/usr/local/etc/haproxy haproxy:2.7-alpine -f /usr/local/etc/haproxy/haproxy.cfg -c
+
+- name: sync-build-deploy
+  image: drillster/drone-rsync
+  settings:
+    hosts: [ "http-lb01a.example.com.br" ]
+    user: root
+    key:
+      from_secret: HTTP-LB01_PRIV
+    source: ./
+    target: /u/docker/haproxy/http-lb01
+    exclude: [ "logs", "run", ".git" ]
+    delete: true
+    script:
+      - export PROJECT=http-lb01
+      - cd /u/docker/haproxy/
+      - chmod -R 770 $PROJECT
+      - chmod 775 $PROJECT
+      - mkdir -p $PROJECT/logs
+      - mkdir -p $PROJECT/run
+      - chmod -R 775 $PROJECT/logs
+      - chmod -R 775 $PROJECT/conf
+      - chmod -R 775 $PROJECT/certs
+      - chown root:99 $PROJECT/run
+      - chown root:99 $PROJECT/logs
+      - chmod 770 $PROJECT/run
+      - cd $PROJECT
+      - docker-compose up -d
+      - sleep 1
+      - docker exec $PROJECT kill -1 1
+      - docker-compose restart rsyslog
+    when:
+      branch:
+        - main
+
+services:
+- name: docker
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: dockersock
+    path: /var/run
+
+volumes:
+- name: dockersock
+  temp: {}
