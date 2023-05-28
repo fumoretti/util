@@ -35,7 +35,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      - app
+      - gitea
 
   runnerd:
     image: drone/drone-runner-docker:1
