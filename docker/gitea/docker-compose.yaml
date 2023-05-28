@@ -1,21 +1,21 @@
 version: "2.4"
-services:  
-  app:
+services:
+
+  gitea:
     image: gitea/gitea:1.18
     container_name: gitea-server
     env_file:
       - ./app/.env/gitea.env
     restart: unless-stopped
     networks:
-      - front
-      - db
+      - gitea
     volumes:
       - ./app/data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-#   ports:
-#      - "3000:3000"
-#      - "3022:22"
+    ports:
+      - "3000:3000"
+      - "3022:22"
     depends_on:
       - db
   
@@ -26,7 +26,10 @@ services:
     env_file:
       - ./drone/.env/drone.env
     networks:
-      - front
+      - gitea
+    ports:
+      - 4443:443
+      - 18080:80
     volumes:
       - ./drone/data:/data
       - /etc/timezone:/etc/timezone:ro
@@ -41,7 +44,9 @@ services:
     env_file:
       - ./drone/.env/drone-runner-docker.env
     networks:
-      - front
+      - gitea
+    ports:
+      - 3001:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/timezone:/etc/timezone:ro
@@ -56,12 +61,10 @@ services:
     env_file:
       - ./db/.env/mariadb.env
     networks:
-      - db
+      - gitea
     volumes:
       - ./db/data:/var/lib/mysql
+      
 networks:
-  front:
-    name: proxyreverso_proxy
-    external: true
-  db:
+  gitea:
     driver: bridge
