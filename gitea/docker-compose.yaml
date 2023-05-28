@@ -1,0 +1,67 @@
+version: "2.4"
+services:  
+  app:
+    image: gitea/gitea:1.18
+    container_name: gitea-server
+    env_file:
+      - ./app/.env/gitea.env
+    restart: unless-stopped
+    networks:
+      - front
+      - db
+    volumes:
+      - ./app/data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+#   ports:
+#      - "3000:3000"
+#      - "3022:22"
+    depends_on:
+      - db
+  
+  drone:
+    image: drone/drone:2
+    container_name: drone-ci
+    restart: unless-stopped
+    env_file:
+      - ./drone/.env/drone.env
+    networks:
+      - front
+    volumes:
+      - ./drone/data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - app
+
+  runnerd:
+    image: drone/drone-runner-docker:1
+    container_name: drone-runner-docker
+    restart: unless-stopped
+    env_file:
+      - ./drone/.env/drone-runner-docker.env
+    networks:
+      - front
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - drone
+  
+  db:
+    image: mariadb:10.3-focal
+    container_name: gitea-db
+    restart: unless-stopped
+    env_file:
+      - ./db/.env/mariadb.env
+    networks:
+      - db
+    volumes:
+      - ./db/data:/var/lib/mysql
+networks:
+  front:
+    name: proxyreverso_proxy
+    external: true
+  db:
+    driver: bridge
