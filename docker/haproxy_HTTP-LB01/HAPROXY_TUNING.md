@@ -91,7 +91,7 @@ echo 'nf_conntrack' >> /etc/modules
 
 ## Dimensionamento do server com HAproxy
 
-Apesar do HAproxy ser extremamente leve, consumindo pouquissimos recursos de CPU e RAM, a quantidade de cada um influencia em alguns parametros dinamicos, tanto de kernel linux quanto do HAproxy. Recomendado variar a quantidade de CPU/RAM e validar em cada situação. Aqui uma base de comparação em testes reais no cluster Vmware do Angeloni em um cenário de HAproxy unico com 5 backends **nginxdemos/hello**.
+Apesar do HAproxy ser extremamente leve, consumindo pouquissimos recursos de CPU e RAM, a quantidade de cada um influencia em alguns parametros dinamicos, tanto de kernel linux quanto do HAproxy. Recomendado variar a quantidade de CPU/RAM e validar em cada situação. Aqui uma base de comparação em testes reais no cluster Vmware em um cenário de HAproxy unico com 5 backends **nginxdemos/hello**.
 
 1. 8vcpu/4Gb
 
