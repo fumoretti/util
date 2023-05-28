@@ -2,7 +2,7 @@ version: "2.4"
 services:
 
   gitea:
-    image: gitea/gitea:1.18
+    image: gitea/gitea:1.19
     container_name: gitea-server
     env_file:
       - ./app/.env/gitea.env
