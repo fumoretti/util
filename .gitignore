@@ -362,3 +362,11 @@ docker/ZabbixStack/server/var-lib-zabbix/*
 docker/ElasticStack/ES-DATA
 docker/haproxy_HTTP-LB01/logs
 docker/haproxy_HTTP-LB01/run
+
+# misc
+docker/plex/library/*
+docker/plex/movies/*
+docker/plex/music/*
+docker/plex/tvseries/*
+docker/plex/media/*
+docker/pihole/etc-*/*
