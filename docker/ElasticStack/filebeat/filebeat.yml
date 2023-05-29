@@ -23,6 +23,10 @@ filebeat.inputs:
   processors:
    - add_tags:
        tags: [ cups_access ]
+   - add_fields:
+      target: ''
+      fields:
+        event.dataset: "cups.access"
 
 - type: log
   id: cups-error
@@ -32,15 +36,23 @@ filebeat.inputs:
   processors:
    - add_tags:
        tags: [ cups_error ]
+   - add_fields:
+      target: ''
+      fields:
+        event.dataset: "cups.error"
 
 - type: log
   id: gitea-logs
   paths:
-    - /docker/gitea/logs/gitea.log
+    - /home/fmoretti/docker/gitea/logs/gitea.log
   fields_under_root: true
   processors:
    - add_tags:
        tags: [ gitea_logs ]
+   - add_fields:
+       target: ''
+       fields:
+         event.dataset: "gitea.log"
 
   setup:
   template.enabled: true
