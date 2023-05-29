@@ -4,8 +4,8 @@ filebeat.config.modules:
   reload.enabled: false
   #reload.period: 10s
 
-setup.template.name: "filebeat-gitea"
-setup.template.pattern: "filebeat-gitea"
+setup.template.name: "filebeat-openedge"
+setup.template.pattern: "filebeat-openedge"
 setup.template.settings:
   index.number_of_replicas: 0
   index.lifecycle.name: "haproxy-ilm"
@@ -54,6 +54,20 @@ filebeat.inputs:
        fields:
          event.dataset: "gitea.log"
 
+- type: log
+  id: openedge-logs
+  paths:
+    - /home/fmoretti/GITHUB/util/docker/ElasticStack/log-samples/openedge-progress/dbname.log
+  fields_under_root: true
+  processors:
+   - add_tags:
+       tags: [ openedge_logs ]
+   - add_fields:
+       target: ''
+       fields:
+         event.dataset: "openedge.log"
+
+
   setup:
   template.enabled: true
   ilm.enabled: false
@@ -75,4 +89,3 @@ processors:
 #  - add_cloud_metadata: ~
 #  - add_docker_metadata: ~
 #  - add_kubernetes_metadata: ~
-
