@@ -4,8 +4,8 @@ filebeat.config.modules:
   reload.enabled: false
   #reload.period: 10s
 
-setup.template.name: "filebeat-cups"
-setup.template.pattern: "filebeat-cups"
+setup.template.name: "filebeat-gitea"
+setup.template.pattern: "filebeat-gitea"
 setup.template.settings:
   index.number_of_replicas: 0
   index.lifecycle.name: "haproxy-ilm"
@@ -33,9 +33,18 @@ filebeat.inputs:
    - add_tags:
        tags: [ cups_error ]
 
-setup:
+- type: log
+  id: gitea-logs
+  paths:
+    - /docker/gitea/logs/gitea.log
+  fields_under_root: true
+  processors:
+   - add_tags:
+       tags: [ gitea_logs ]
+
+  setup:
   template.enabled: true
-  ilm.enabled: true
+  ilm.enabled: false
 # ================================== Outputs ===================================
 # ------------------------------ ElasticSearch Output -------------------------------
 #output.elasticsearch:
@@ -54,3 +63,4 @@ processors:
 #  - add_cloud_metadata: ~
 #  - add_docker_metadata: ~
 #  - add_kubernetes_metadata: ~
+
