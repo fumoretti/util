@@ -1,6 +1,6 @@
 # ============================== Filebeat modules ==============================
 filebeat.config.modules:
-  path: ${path.config}/modules.d/*.yml
+  path: /opt/filebeat-8/modules.d/*.yml
   reload.enabled: false
   #reload.period: 10s
 
