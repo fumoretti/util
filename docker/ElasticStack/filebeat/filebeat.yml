@@ -74,7 +74,7 @@ filebeat.inputs:
 # ================================== Outputs ===================================
 # ------------------------------ ElasticSearch Output -------------------------------
 #output.elasticsearch:
-#  hosts: '192.168.88.245:9200'
+#  hosts: 'pc.local.lan:9200'
 #  username: 'elastic'
 #  password: 'changeme'
 #  index: "filebeat-default"

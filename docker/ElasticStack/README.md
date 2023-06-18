@@ -4,11 +4,12 @@ My personal "daily-driver" deployment of ElasticStack based on original github p
 
 What i changed from stock:
 
-- Added filebeat directory with some confs that I normaly use (with cups logs and Haproxy processors/modules)
+- Added filebeat ans heartbeat directory with some confs that I normaly use
 - Chaged ElasticSearch service from docker named volumes to bind volume
 - Changed kibana baseURL confs to compatibility with HAproxy reverse proxy with subpath /kibana
-- logstash pipeline to GROK some cups and HAproxy logs
+- logstash pipeline to GROK logs not officialy supported by elastic
 - logstash with multi index/data-streams routes based on filebeat tags
+- many others to come
 
 
 Next sections on this doc are oficial from the awesome GITHUB project.

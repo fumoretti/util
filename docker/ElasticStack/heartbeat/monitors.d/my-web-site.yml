@@ -1,0 +1,13 @@
+- type: http
+  id: example-websites
+  name: Example Web Sites
+  schedule: '@every 5s'
+  urls: [ "https://www.example.com" , "https://example-two.io" ]
+  check.request:
+    method: GET
+    #headers:
+      #'Authorization': 'ApiKey HASH-BASE64-HERE'
+  check.response.status: [200]
+  response.include_body: on_error
+  response.include_body_max_bytes: 4096000
+

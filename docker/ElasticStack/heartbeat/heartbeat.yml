@@ -1,0 +1,39 @@
+heartbeat.config.monitors:
+  path: ${path.config}/monitors.d/*.yml
+  reload.enabled: false
+  reload.period: 5s
+
+heartbeat.monitors:
+- type: http
+  enabled: true
+  id: kibana-local
+  name: Kibana Local
+  urls: ["http://kibana.local.lan"]
+  schedule: '@every 10s'
+
+heartbeat.run_from:
+  id: MyHomeLab
+  geo:
+    name: home-pc-cua
+    location: -49.6844014, -79.3756864
+    continent_name: South America
+    country_iso_code: BR
+    region_name: My Region
+    region_iso_code: MR
+    city_name: My City
+
+setup.template.settings:
+  index.number_of_shards: 1
+  index.codec: best_compression
+
+setup.kibana.host: "http://kibana.local.lan"
+setup.kibana.username: elastic
+setup.kibana.password: changeme
+
+output.elasticsearch:
+  hosts: 'pc.local.lan:9200'
+  username: 'elastic'
+  password: 'changeme'
+
+processors:
+  - add_observer_metadata:
