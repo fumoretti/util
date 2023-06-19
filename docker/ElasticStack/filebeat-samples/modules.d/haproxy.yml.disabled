@@ -1,0 +1,6 @@
+- module: haproxy
+  log:
+    enabled: true
+    var.paths: ["${your-log-base-path}/logs/haproxy.log"]
+    var.input: "file"
+

@@ -2,7 +2,7 @@
   id: elastic-search-local
   name: Elastic Search
   schedule: '@every 5s'
-  urls: [ "http://pc.local.lan:9200/_cluster/health?pretty" ]
+  urls: [ "http://es.local.lan:9200/_cluster/health?pretty" ]
   check.request:
     method: GET
     headers:

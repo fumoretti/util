@@ -4,11 +4,11 @@ filebeat.config.modules:
   reload.enabled: false
   #reload.period: 10s
 
-setup.template.name: "filebeat-openedge"
-setup.template.pattern: "filebeat-openedge"
+setup.template.name: "filebeat-default"
+setup.template.pattern: "filebeat-default"
 setup.template.settings:
   index.number_of_replicas: 0
-  index.lifecycle.name: "haproxy-ilm"
+  index.lifecycle.name: "filebeat-default"
 setup.ilm.overwrite: true
 setup.kibana.host: "http://kibana.local.lan"
 setup.kibana.username: elastic
@@ -44,7 +44,7 @@ filebeat.inputs:
 - type: log
   id: gitea-logs
   paths:
-    - /home/fmoretti/docker/gitea/logs/gitea.log
+    - ${your-log-base-path}/gitea/logs/gitea.log
   fields_under_root: true
   processors:
    - add_tags:
@@ -57,7 +57,7 @@ filebeat.inputs:
 - type: log
   id: openedge-logs
   paths:
-    - /home/fmoretti/GITHUB/util/docker/ElasticStack/log-samples/openedge-progress/dbname.log
+    - ${your-log-base-path}/openedge-progress/dbname.log
   fields_under_root: true
   processors:
    - add_tags:
@@ -74,7 +74,7 @@ filebeat.inputs:
 # ================================== Outputs ===================================
 # ------------------------------ ElasticSearch Output -------------------------------
 #output.elasticsearch:
-#  hosts: 'pc.local.lan:9200'
+#  hosts: 'es.local.lan:9200'
 #  username: 'elastic'
 #  password: 'changeme'
 #  index: "filebeat-default"

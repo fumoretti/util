@@ -11,19 +11,20 @@ apk add --update-cache libc6-compat go
 ## Download/Prepare Files
 
 ```
+FILEBEAT_VERSION="8.8.1"
 cd /var/tmp
-wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.8.0-linux-x86_64.tar.gz
-tar -xvzf filebeat-8.8.0-linux-x86_64.tar.gz -C /opt/
-mv /opt/filebeat-8.8.0-linux-x86_64 /opt/filebeat-8
+wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${FILEBEAT_VERSION}-linux-x86_64.tar.gz
+tar -xvzf filebeat-${FILEBEAT_VERSION}-linux-x86_64.tar.gz -C /opt/
+mv /opt/filebeat-${FILEBEAT_VERSION}-linux-x86_64 /opt/filebeat-8
 ```
 
 ## Copy filebeat conf samples
 
-Copy **filebeat.yml** from **./filebeat** directory of this repository to __/opt/filebeat-8/__ on the Alpine Linux host.
+Copy **filebeat.yml** from **./filebeat-samples** directory of this repository to __/opt/filebeat-8/__ on the Alpine Linux host.
 
 ## Create open-rc service scripts
 
-- Copy **filebeat** from **./filebeat/init.d** directory of this repository to __/etc/init.d/__ on the Alpine Linux host.
+- Copy **filebeat** from **./filebeat-samples/init.d** directory of this repository to __/etc/init.d/__ on the Alpine Linux host.
 
 - Change permissions of the script
 
@@ -72,3 +73,9 @@ With no more filebeat process on the host:
 pidoff filebeat
 ps -ef |grep filebeat
 ```
+
+# About
+
+For tips and improvements, feel free to contact me.
+
+Thanks!
