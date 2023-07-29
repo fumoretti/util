@@ -1,0 +1,20 @@
+version: '3'
+networks:
+  openproject: {}
+volumes:
+  openproject-pgdata:
+  openproject-assets:
+
+services:
+  openproject:
+    image: openproject/community:12
+    container_name: openproject
+    hostname: openproject
+    restart: unless-stopped
+    networks:
+      - openproject
+    volumes:
+      - openproject-pgdata:/var/openproject/pgdata
+      - openproject-assets:/var/openproject/assets
+    env_file:
+      - .openproject.env

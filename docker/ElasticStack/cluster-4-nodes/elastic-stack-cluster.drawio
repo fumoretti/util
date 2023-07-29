@@ -1,0 +1,91 @@
+<mxfile host="Electron" modified="2023-06-29T02:54:48.177Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.3.7 Chrome/112.0.5615.204 Electron/24.5.0 Safari/537.36" etag="yDQRcEFIH3k4ndgCHViF" version="21.3.7" type="device">
+  <diagram name="Page-1" id="gx2y8mRjdZstPtEUQDJU">
+    <mxGraphModel dx="1311" dy="986" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-18" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="56" y="420" width="290" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-1" value="ES-NODE01&lt;br&gt;data_hot, master, ingest&lt;br&gt;all-flash storage" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="116" y="610" width="170" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-4" value="LOGSTASH01&lt;br&gt;FILEBEAT01" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="116" y="490" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-10" value="" style="shape=doubleArrow;direction=south;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="186" y="560" width="25" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="HZD1_-2bmdsQ-Ihkb_0g-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="260" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="HZD1_-2bmdsQ-Ihkb_0g-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="290" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="HZD1_-2bmdsQ-Ihkb_0g-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="260" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-14" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=none;fillColor=#00BEF2;shape=mxgraph.azure.load_balancer_generic;pointerEvents=1;" vertex="1" parent="1">
+          <mxGeometry x="503" y="230" width="37.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-16" value="HAPROXY&lt;br&gt;tcp + http" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="436" y="140" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-17" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="66" y="449" width="50" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-19" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="376" y="420" width="290" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-20" value="ES-NODE02&lt;br&gt;data_hot, master, ingest&lt;br&gt;all-flash storage" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="436" y="610" width="170" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-21" value="LOGSTASH02&lt;br&gt;FILEBEAT02" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="436" y="490" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-22" value="" style="shape=doubleArrow;direction=south;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="506" y="560" width="25" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-23" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="386" y="449" width="50" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-24" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="696" y="420" width="290" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-25" value="ES-NODE03&lt;br&gt;data_hot, master, ingest&lt;br&gt;all-flash storage" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="756" y="610" width="170" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-26" value="LOGSTASH03&lt;br&gt;FILEBEAT03" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="756" y="490" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-27" value="" style="shape=doubleArrow;direction=south;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="826" y="560" width="25" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-28" value="" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Docker.svg;" vertex="1" parent="1">
+          <mxGeometry x="706" y="449" width="50" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-32" value="ROUND-ROBIN" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="466" y="198" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-34" value="ES-COLD-NODE01&lt;br&gt;data_warm, data_cold, non-eligible-master&lt;br&gt;HIGH DENSITY SATA DISKS (10TB total)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="278.5" y="902" width="480" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-39" value="" style="shape=doubleArrow;direction=south;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="506" y="830" width="25" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-40" value="LONG TIME RETENTION COLD LOGS" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="401.75" y="902" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HZD1_-2bmdsQ-Ihkb_0g-41" value="&lt;b&gt;&lt;font style=&quot;font-size: 27px;&quot;&gt;ELASTIC STACK CLUSTER&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="336.75" y="8" width="370" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
