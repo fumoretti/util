@@ -1,0 +1,93 @@
+version: '2.4'
+
+volumes:
+  kong-pgdata: {}
+  konga-dbdata: {}
+
+networks:
+  kong-net:
+  haproxy:
+    name: haproxy
+    external: true
+
+services:
+  kong:
+    image: kong:2.8
+    container_name: kong
+    hostname: kong-api-gw
+    restart: unless-stopped
+    networks:
+      - kong-net
+      - haproxy
+    env_file:
+      - ./.kong.env
+    depends_on:
+      - kong-db
+  
+  kong-db:
+    image: postgres:9.6
+    container_name: kong-db
+    hostname: kong-db
+    restart: unless-stopped
+    networks:
+      - kong-net
+    volumes:
+      - kong-pgdata:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - ./.kong-db.env
+
+  konga:
+    image: pantsel/konga:0.14.9
+    container_name: konga
+    hostname: konga
+    restart: unless-stopped
+    networks:
+      - kong-net
+      - haproxy
+    ports:
+      - 1337:1337
+    env_file:
+      - ./.konga.env
+    depends_on:
+      - konga-db
+
+  konga-db:
+    image: mariadb:10.4
+    container_name: konga-db
+    hostname: konga-db
+    restart: unless-stopped
+    networks:
+      - kong-net
+    volumes:
+      - konga-dbdata:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - ./.konga-db.env
+
+  kong-migrations:
+    image: kong:2.8
+    container_name: kong-migrations
+    hostname: kong-migrations
+    restart: on-failure
+    networks:
+      - kong-net
+    env_file:
+      - ./.kong.env
+    command: kong migrations bootstrap
+    depends_on:
+      - kong-db
+
+  kong-migrations-up:
+    image: kong:2.8
+    container_name: kong-migrations-up
+    hostname: kong-migrations-up
+    restart: on-failure
+    networks:
+      - kong-net
+    env_file:
+      - ./.kong.env
+    command: kong migrations up && kong migrations finish
+    depends_on:
+      - kong-db
+
