@@ -370,3 +370,4 @@ docker/plex/music/*
 docker/plex/tvseries/*
 docker/plex/media/*
 docker/pihole/etc-*/*
+docker/grafana-loki/promtail/tmp
