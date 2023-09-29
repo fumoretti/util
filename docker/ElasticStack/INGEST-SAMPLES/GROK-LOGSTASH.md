@@ -156,6 +156,7 @@ Fortigate -> Filebeat Fortigate Module with Syslog Input -> Logstash with tags a
 
 Based on stock fortinet ingest pipelines (filebeat-8.8.0-fortinet-firewall-pipeline and filebeat-8.8.0-fortinet-firewall-event) created by the filebeat module, but with some field drops do optimize index size. Basicaly, Cloned Stock pipeline (filebeat-8.8.0-fortinet-firewall-pipeline) and added fields to DELETE processor. All dropped fields:
 
+```
 "remove": {
       "field": [
         "_temp",
@@ -223,29 +224,31 @@ Based on stock fortinet ingest pipelines (filebeat-8.8.0-fortinet-firewall-pipel
         "fortinet.firewall.authserver"
       ]
 }
+```
 
 Changed the name of pipelined called by the filebeat-8.8.0-fortinet-firewall-pipeline during processor to the cloned one.
 
 From:
-
+```
   {
     "pipeline": {
       "name": "filebeat-8.8.0-fortinet-firewall-event",
       "if": "ctx.fortinet?.firewall?.type == 'event'"
     }
   }
-
+```
 To:
-
+```
   {
     "pipeline": {
       "name": "filebeat-optimized-fortinet-firewall-event",
       "if": "ctx.fortinet?.firewall?.type == 'event'"
     }
   }
-
+```
 ### Logstash output route
 
+```
   else if "fortinet" in  [@metadata][pipeline] {
     elasticsearch {
       hosts => "elasticsearch:9200"
@@ -256,31 +259,37 @@ To:
       password => "YOUR_FILEBEAT_INTERNAL_STRONG_PASSWORD_HERE"
     }
   }
-
+```
 
 ## NGINX tcp/udp lodbalancer
 
 sample access:
-
+```
 10.1.1.100 [2023-08-23T09:26:17-03:00] dns-lb01a UDP 10.1.1.105 200 10.1.1.110:53 0.000 172 44 0.000
-
+```
 nginx log_format:
-
+```
 log_format basic '$remote_addr [$time_iso8601] '
                  '$protocol $server_addr $status $upstream_addr $upstream_connect_time $bytes_sent $bytes_received '
                  '$session_time';
-
+```
 match:
 
+```
 ^%{IP:source.ip}%{SPACE}\[%{TIMESTAMP_ISO8601:@timestamp}]%{SPACE}%{HOSTNAME:lb_host}%{SPACE}%{WORD:request_protocol}%{SPACE}%{IP:request_addr}%{SPACE}%{INT:request_response}%{SPACE}%{IP:upstream_addr}\:%{INT:request_port}%{SPACE}%{NUMBER:upstream_connect_time}%{SPACE}%{NUMBER:upstream_bytes_snd}%{SPACE}%{NUMBER:upstream_bytes_rcv}%{SPACE}%{NUMBER:upstream_session_time}
+```
 
 sample error:
 
+```
 2023/08/18 03:37:01 [error] 23#23: *5342 upstream timed out (110: Connection timed out) while proxying connection, udp client: 10.1.1.100, server: 0.0.0.0:53, upstream: "10.1.1.110:53", bytes from/to client:51/0, bytes from/to upstream:0/51
+```
 
 match:
 
+```
 ^%{DATA:@timestamp}%{SPACE}\[%{WORD:nginx_loglevel}\]%{SPACE}%{INT:nginx_pid}\#%{INT:nginx_tid}\:%{SPACE}\*%{INT:nginx_cid}%{SPACE}%{GREEDYDATA:nginx_event}
+```
 
 ## ORACLE DATABASE DIAG
 
@@ -288,24 +297,33 @@ match:
 
 sample1: 
 
+```
 05-SEP-2023 10:38:22 * (CONNECT_DATA=(SID=MYDBSERVICE)(CID=(PROGRAM=)(HOST=__jdbc__)(USER=))) * (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.1.100)(PORT=47536)) * establish * MYDBSERVICE * 0
+```
 
 sample2: 
 
+```
 06-SEP-2023 10:20:02 * (CONNECT_DATA=(SERVICE_NAME=MYDBSERVICE)(CID=(PROGRAM=sqlplus)(HOST=myapp.mycompany.com.br)(USER=clientuser))(CONNECTION_ID=BLGZ2CV8+zngYzQ3qMC9Ng==)) * (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.2.221)(PORT=44264)) * establish * MYDBSERVICE * 0
+```
 
 sample3:
 
+```
 06-SEP-2023 15:46:48 * (CONNECT_DATA=(SERVICE_NAME=MYDB)) * (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.1.100)(PORT=61167)) * establish * MYDB * 0
-
+```
 
 Match samples 1 and 2:
 
+```
 ^%{DATA:@timestamp}%{SPACE}\*%{SPACE}\(CONNECT_DATA\=\(%{GREEDYDATA}(SERVICE_NAME|SID)=%{WORD:client_requested_service}\)\(CID\=\(PROGRAM=%{GREEDYDATA:client_program}\)\(HOST\=%{DATA:client_host}\)%{GREEDYDATA}\(USER\=%{DATA:client_user}\)%{GREEDYDATA}\(ADDRESS\=\(PROTOCOL\=%{DATA:client_protocol}\)\(HOST\=%{IP:client_ip}\)\(PORT\=%{INT:client_port}\)\)%{SPACE}\*%{SPACE}%{WORD:connection_status}%{SPACE}\*%{SPACE}%{WORD:oracle_service}
+```
 
 match 3:
 
+```
 ^%{DATA:@timestamp}%{SPACE}\*%{SPACE}\(CONNECT_DATA\=\(%{GREEDYDATA}(SERVICE_NAME|SID)=%{WORD:client_requested_service}\)\)%{GREEDYDATA}\(ADDRESSo\=\(PROTOCOL\=%{DATA:client_protocol}\)\(HOST\=%{IP:client_ip}\)\(PORT\=%{INT:client_port}\)\)%{SPACE}\*%{SPACE}%{WORD:connection_status}%{SPACE}\*%{SPACE}%{WORD:oracle_service}
+```
 
 ####  INGEST topology
 
@@ -317,6 +335,7 @@ Filebeat on Oracle Log files (added oradiag into tags field) to Logstash Beats I
 
 Filter:
 
+```
       if "oradiag" in [tags] {
 
                 grok{
@@ -327,9 +346,11 @@ Filter:
 
                 mutate { remove_field => [ "message" ] }
   }
+```
 
 Output:
 
+```
   else if "oradiag" in [tags] and "_grokparsefailure" in [tags] {
     elasticsearch {
       hosts => "elasticsearch:9200"
@@ -349,11 +370,13 @@ Output:
       password => "YOURSTRONGFILEBEATPASSWORDHERE"
     }
   }
+```
 
 ## Aruba Clearpass - Wifi Clientes
 
 Sample:
 
+```
 <142>1 2023-09-29T14:26:42-03:00 clearpass cpass-guest - - [guest@14823 client="10.5.84.52:37628" server="10.199.1.235:443" script="/guest/guestssid.php" function="NwaGuestRegisterForm" args="array (
   'user' => 
   array (
@@ -393,11 +416,13 @@ Sample:
 Account will expire at 2023-09-30 14:26:42
 Account sponsor is cliente1234@gmail.com
 User DB: ClearPass Policy Manager
+```
 
 ### Fluxo do pipeline:
 
 #### INPUT
 
+```
 syslog {
    port => 5618
    timezone => "America/Sao_Paulo"
@@ -405,15 +430,19 @@ syslog {
       "event.dataset" => "aruba-clearpass"
    }
 }
+```
 
 #### FILTER
 
 1. GROK que separa o array com informações do restante desnecessário em um field temporaria "clearpass_array"
 
+```
 grok { match => { "message" => "^\<(?m)%{GREEDYDATA}array\ \((?m)%{GREEDYDATA:clearpass_array}\,(?m)%{GREEDYDATA}\)\,(?m)%{GREEDYDATA}" } }
+```
 
 2. Mutate Filter que remove caracteres indesejaveis
 
+```
 mutate { 
 
    gsub => [
@@ -423,13 +452,17 @@ mutate {
             
             ]
       }
+```
 
 3. KV filter em cima da field "clearpass_Array" separando CHAVE e VALORES baseado no separador "=>"
 
+```
 kv { source => "clearpass_array" field_split => "," value_split_pattern => "=>" trim_key => " " }
+```
 
 4. Conversão de data nas fields com padrão UNIX, ex:
 
+```
 date {
 
    match => [ "create_time","UNIX" ]
@@ -437,15 +470,19 @@ date {
    timezone => "America/Sao_Paulo"
 
 }
+```
 
 5. Remove fields desnecessárias
 
+```
 mutate { remove_field => [ "clearpass_array", "message", "password" ] }
+```
 
 #### OUTPUT
 
 Faz o ingest dos eventos no DAtaStream dedicado ao Aruba Clearpass, com rota ininicial para eventos com erro de matchgrok:
 
+```
   else if "aruba-clearpass" in [event.dataset] and "_grokparsefailure" in [tags] {
    elasticsearch {
       hosts => "elasticsearch:9200"
@@ -465,3 +502,4 @@ Faz o ingest dos eventos no DAtaStream dedicado ao Aruba Clearpass, com rota ini
       password => "SENHA"
    }
   }
+```

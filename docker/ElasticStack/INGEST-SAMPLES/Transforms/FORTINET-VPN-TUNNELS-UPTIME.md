@@ -7,9 +7,11 @@ pattern:
 
 *-fortinet*
 
-Search: 
+KQL Search: 
 
+```
 observer.name: MYFORTIFW* AND fortinet.firewall.action: (tunnel-down or tunnel-up or tunnel-stats) AND fortinet.firewall.tunnelip: *
+```
 
 Dest Index:
 
@@ -17,12 +19,14 @@ fortinet-vpn-tunnels
 
 Frequency:
 
+```
 "frequency": "20s",
   "sync": {
     "time": {
       "field": "@timestamp",
       "delay": "10s"
     }
+```
 
 Group By:
 
@@ -33,6 +37,7 @@ source.user.name
 
 Aggregations:
 
+```
 "tunnel.last.time": {
   "max": {
     "field": "@timestamp"
@@ -43,14 +48,17 @@ Aggregations:
     "field": "@timestamp"
   }
 }
-
+```
 
 Para update:
 
+```
 POST _transform/<transform_id>/_update
+```
 
 Para review do transform:
 
+```
 POST _transform/_preview
 {
   "id": "fortivpntunnels",
@@ -203,10 +211,12 @@ POST _transform/_preview
     }
   }
 }
+```
 
 
 Para criar:
 
+```
 POST _transform/
 {
   "id": "fortivpntunnels",
@@ -359,10 +369,11 @@ POST _transform/
     }
   }
 }
-
+```
 
 ## Runtime field para calculo da duração do tunel VPN
 
+```
 PUT fortinet-vpn-tunnels/_mapping
 {
     "runtime": {
@@ -380,3 +391,4 @@ PUT fortinet-vpn-tunnels/_mapping
       }
     }
 }
+```
