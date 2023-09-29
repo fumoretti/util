@@ -261,7 +261,7 @@ To:
   }
 ```
 
-## NGINX tcp/udp lodbalancer
+## NGINX tcp/udp loadbalancer
 
 sample access:
 ```
