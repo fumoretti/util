@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  ingress:
+    name: traefik
+    external: true
+
+services:
+  traefik:
+    image: traefik:2
+    networks:
+      - ingress
+    ports:
+      - "80:80"
+      - "443:443"
+      # Dashboard
+      - "8080:8080"
+    volumes:
+      - ./config:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+

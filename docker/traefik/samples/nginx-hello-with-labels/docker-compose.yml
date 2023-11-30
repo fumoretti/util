@@ -1,0 +1,47 @@
+version: '3'
+
+networks:
+  ingress:
+    name: traefik
+    external: true
+
+services:
+  webapp1:
+    container_name: hello01
+    image: nginxdemos/hello
+    hostname: hello01
+    restart: unless-stopped
+    networks:
+      - ingress
+    labels:
+      - traefik.http.routers.hello01.rule=(Host(`hello01.local.lan`) && Path(`/app1`))
+      - traefik.http.services.hello01.loadbalancer.server.port=81
+    volumes:
+      - ./hello01.conf:/etc/nginx/conf.d/hello.conf:ro
+
+  webapp2:
+    container_name: hello02
+    image: nginxdemos/hello
+    hostname: hello02
+    restart: unless-stopped
+    networks:
+      - ingress
+    labels:
+      - traefik.http.routers.hello02.rule=(Host(`hello01.local.lan`) && Path(`/app2`))
+
+  webapp3:
+    container_name: hello03
+    image: nginxdemos/hello
+    hostname: hello03
+    restart: unless-stopped
+    networks:
+      - ingress
+
+  webapp4:
+    container_name: hello04
+    image: nginxdemos/hello
+    hostname: hello04
+    restart: unless-stopped
+    networks:
+      - ingress
+
