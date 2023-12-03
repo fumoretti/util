@@ -1,40 +1,32 @@
 global:
   checkNewVersion: false
-  sendAnonymousUsage: false  # true by default
+  sendAnonymousUsage: false
 
-# (Optional) Log information
-# ---
 log:
   level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
   format: common  # common, json, logfmt
-  filePath: /var/log/traefik/traefik.log
+  filePath: /logs/traefik.log
 
-# (Optional) Accesslog
-# ---
-# accesslog:
-#   format: common  # common, json, logfmt
-#   filePath: /var/log/traefik/access.log
+accessLog:
+  format: common  # common, json, logfmt
+  filePath: /logs/access.log
 
-# (Optional) Enable API and Dashboard
-# ---
 api:
   dashboard: true  # true by default
-  insecure: true  # Don't do this in production!
+  insecure: true  # DEV AND TESTS ONLY
 
-# Entry Points configuration
-# ---
 entryPoints:
-  web:
+  http:
     address: :80
-    # (Optional) Redirect to HTTPS
+    # Redirect to HTTPS
     # ---
     # http:
     #   redirections:
     #     entryPoint:
-    #       to: websecure
+    #       to: https
     #       scheme: https
 
-  websecure:
+  https:
     address: :443
 
 # Configure your CertificateResolver here...
@@ -56,14 +48,14 @@ entryPoints:
 #       httpChallenge:
 #         entryPoint: web
 
-# (Optional) Overwrite Default Certificates
+# Overwrite Default Certificates
 # tls:
 #   stores:
 #     default:
 #       defaultCertificate:
 #         certFile: /etc/traefik/certs/cert.pem
 #         keyFile: /etc/traefik/certs/cert-key.pem
-# (Optional) Disable TLS version 1.0 and 1.1
+# Disable TLS version 1.0 and 1.1
 #   options:
 #     default:
 #       minVersion: VersionTLS12
@@ -73,5 +65,6 @@ providers:
     exposedByDefault: true  # Default is true
   file:
     # watch for dynamic configuration changes
-    directory: ./config
+    directory: /etc/traefik
     watch: true
+

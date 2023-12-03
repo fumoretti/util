@@ -371,3 +371,4 @@ docker/plex/tvseries/*
 docker/plex/media/*
 docker/pihole/etc-*/*
 docker/grafana-loki/promtail/tmp
+docker/traefik/logs

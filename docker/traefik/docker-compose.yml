@@ -8,6 +8,7 @@ networks:
 services:
   traefik:
     image: traefik:2
+    restart: unless-stopped
     networks:
       - ingress
     ports:
@@ -16,6 +17,8 @@ services:
       # Dashboard
       - "8080:8080"
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./config:/etc/traefik
+      - ./logs:/logs
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
