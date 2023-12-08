@@ -12,8 +12,8 @@ accessLog:
   filePath: /logs/access.log
 
 api:
-  dashboard: true  # true by default
-  insecure: true  # DEV AND TESTS ONLY
+  dashboard: true
+  insecure: true  # DEV AND TEST ONLY
 
 entryPoints:
   http:
@@ -62,7 +62,7 @@ entryPoints:
 
 providers:
   docker:
-    exposedByDefault: true  # Default is true
+    exposedByDefault: true
   file:
     # watch for dynamic configuration changes
     directory: /etc/traefik

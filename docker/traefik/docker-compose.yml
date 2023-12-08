@@ -1,5 +1,6 @@
+---
 version: '3'
-
+# docker network create traefik... before up the stack
 networks:
   ingress:
     name: traefik
@@ -7,18 +8,20 @@ networks:
 
 services:
   traefik:
-    image: traefik:2
+    image: traefik:2.10
     restart: unless-stopped
     networks:
-      - ingress
+      ingress:
+        aliases:
+          - traefik-ingress
     ports:
       - "80:80"
       - "443:443"
-      # Dashboard
+      # No authenticated Dashboard!!!
       - "8080:8080"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./config:/etc/traefik
       - ./logs:/logs
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
+...
