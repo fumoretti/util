@@ -15,10 +15,13 @@ services:
       - ingress
     labels:
       - traefik.http.routers.hello01.rule=(Host(`hello01.local.lan`) && Path(`/app1`))
+      #to enable HTTPS when global or by priority http to https are enabled
+      #- traefik.http.routers.hello01.tls=true
       - traefik.http.services.hello01.loadbalancer.server.port=81
     volumes:
       - ./hello01.conf:/etc/nginx/conf.d/hello.conf:ro
 
+  #http only by router priority
   webapp2:
     container_name: hello02
     image: nginxdemos/hello
@@ -28,20 +31,24 @@ services:
       - ingress
     labels:
       - traefik.http.routers.hello02.rule=(Host(`hello01.local.lan`) && Path(`/app2`))
+      # non HTTPs router based on priority
+      # - traefik.http.routers.hello02.entrypoints=web
+      # - traefik.http.routers.hello02.priority=2000
+      - traefik.http.services.hello02.loadbalancer.server.port=80
 
-  webapp3:
-    container_name: hello03
-    image: nginxdemos/hello
-    hostname: hello03
-    restart: unless-stopped
-    networks:
-      - ingress
+  # webapp3:
+  #   container_name: hello03
+  #   image: nginxdemos/hello
+  #   hostname: hello03
+  #   restart: unless-stopped
+  #   networks:
+  #     - ingress
 
-  webapp4:
-    container_name: hello04
-    image: nginxdemos/hello
-    hostname: hello04
-    restart: unless-stopped
-    networks:
-      - ingress
+  # webapp4:
+  #   container_name: hello04
+  #   image: nginxdemos/hello
+  #   hostname: hello04
+  #   restart: unless-stopped
+  #   networks:
+  #     - ingress
 

@@ -1,0 +1,85 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+log:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: common  # common, json, logfmt
+  filePath: /logs/traefik.log
+
+accessLog:
+  format: common  # common, json, logfmt
+  filePath: /logs/access.log
+
+api:
+  dashboard: true
+  insecure: true  # DEV AND TEST ONLY
+
+entryPoints:
+  web:
+    address: :80
+    # Redirect to HTTPS
+    # ---
+    #http:
+    #  redirections:
+    #    entryPoint:
+    #      to: websecure
+    #      scheme: https
+
+  websecure:
+    address: :443
+
+middlewares:
+  redirect-to-https:
+    redirectscheme:
+      scheme: https
+
+# catch all and redirect to HTTPs except containers that own routers containing priority > 1000
+# Ref. https://community.traefik.io/t/how-to-disable-http-redirect-to-https-for-a-single-container-domain/7709
+routers:
+  all-to-https:
+    rule: hostregexp(`{host:.+}`)
+    entrypoints: web
+    middlewares: redirect-to-https
+    priority: 1000
+
+
+# Configure your CertificateResolver here...
+# ---
+# certificatesResolvers:
+#   staging:
+#     acme:
+#       email: your-email@example.com
+#       storage: /etc/traefik/certs/acme.json
+#       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+#       httpChallenge:
+#         entryPoint: web
+#
+#   production:
+#     acme:
+#       email: your-email@example.com
+#       storage: /etc/traefik/certs/acme.json
+#       caServer: "https://acme-v02.api.letsencrypt.org/directory"
+#       httpChallenge:
+#         entryPoint: web
+
+# Overwrite Default Certificates
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/local.lan.crt
+        keyFile: /certs/local.lan.key
+  #Disable TLS version 1.0 and 1.1
+  options:
+    default:
+      minVersion: VersionTLS12
+
+providers:
+  docker:
+    exposedByDefault: true
+  file:
+    # watch for dynamic configuration changes
+    directory: /etc/traefik
+    watch: true
+
