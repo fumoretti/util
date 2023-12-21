@@ -18,31 +18,19 @@ api:
 entryPoints:
   web:
     address: :80
-    # Redirect to HTTPS
+    # Redirect to HTTPS except routers with higher priority
     # ---
-    #http:
-    #  redirections:
-    #    entryPoint:
-    #      to: websecure
-    #      scheme: https
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          priority: 1000
 
   websecure:
     address: :443
-
-middlewares:
-  redirect-to-https:
-    redirectscheme:
-      scheme: https
-
-# catch all and redirect to HTTPs except containers that own routers containing priority > 1000
-# Ref. https://community.traefik.io/t/how-to-disable-http-redirect-to-https-for-a-single-container-domain/7709
-routers:
-  all-to-https:
-    rule: hostregexp(`{host:.+}`)
-    entrypoints: web
-    middlewares: redirect-to-https
-    priority: 1000
-
+    http:
+      tls: true
 
 # Configure your CertificateResolver here...
 # ---

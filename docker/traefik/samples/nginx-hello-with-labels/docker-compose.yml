@@ -15,8 +15,6 @@ services:
       - ingress
     labels:
       - traefik.http.routers.hello01.rule=(Host(`hello01.local.lan`) && Path(`/app1`))
-      #to enable HTTPS when global or by priority http to https are enabled
-      #- traefik.http.routers.hello01.tls=true
       - traefik.http.services.hello01.loadbalancer.server.port=81
     volumes:
       - ./hello01.conf:/etc/nginx/conf.d/hello.conf:ro

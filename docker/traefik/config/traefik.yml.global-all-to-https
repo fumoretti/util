@@ -28,6 +28,8 @@ entryPoints:
 
   websecure:
     address: :443
+    http:
+      tls: true
 
 # Configure your CertificateResolver here...
 # ---
