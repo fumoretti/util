@@ -16,7 +16,7 @@ api:
   insecure: true  # DEV AND TEST ONLY
 
 entryPoints:
-  http:
+  web:
     address: :80
     # Redirect to HTTPS
     # ---
@@ -26,7 +26,7 @@ entryPoints:
     #       to: https
     #       scheme: https
 
-  https:
+  websecure:
     address: :443
 
 # Configure your CertificateResolver here...
