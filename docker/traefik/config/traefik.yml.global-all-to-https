@@ -50,7 +50,7 @@ entryPoints:
 #       httpChallenge:
 #         entryPoint: web
 
-# Overwrite Default Certificates
+# Local cert files Stores
 tls:
   stores:
     default:
