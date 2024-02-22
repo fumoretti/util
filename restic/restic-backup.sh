@@ -11,7 +11,8 @@ export RESTIC_PASSWORD_FILE=/path/to/repo/password/file
 LOG_FILE=${RESTIC_HOME}/restic-$(date +%d%m%Y_%H%M%S).log
 CURRENT_DATE=$(date +%d%m%Y_%H%M%S)
 BACKUP_SOURCE=/path/to/backup/source
-SNAP_RETENTION=30
+SNAP_RETENTION=15
+GROUP_BY=paths
 EXCLUDE_FILE="$(mktemp)"
 EXCLUDE_LIST="${BACKUP_SOURCE}/.cache/
 ${BACKUP_SOURCE}/dir1/
@@ -27,7 +28,7 @@ echo "$(date) - Starting RESTIC BACKUP
 "
                 restic version
                 for i in ${EXCLUDE_LIST} ; do echo ${i} >> ${EXCLUDE_FILE} ; done
-                restic backup --exclude-file=${EXCLUDE_FILE} --tag "cron-${CURRENT_DATE}" ${BACKUP_SOURCE}
+                restic backup --group-by ${GROUP_BY} --exclude-file=${EXCLUDE_FILE} --tag "cron-${CURRENT_DATE}" ${BACKUP_SOURCE}
 
 echo " 
 
@@ -37,7 +38,7 @@ Current Snapshots:
 
 "
 
-                restic snapshots
+                restic snapshots --group-by ${GROUP_BY}
 
 echo " 
 
@@ -54,7 +55,7 @@ $(date) Cleaning:
 
 "
 
-                restic forget --prune --keep-last ${SNAP_RETENTION}
+                restic forget --group-by ${GROUP_BY} --prune --keep-last ${SNAP_RETENTION}
                 rm -f $EXCLUDE_FILE
 
 echo "$(date) - Finished RESTIC BACKUP
