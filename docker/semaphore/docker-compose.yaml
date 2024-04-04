@@ -1,0 +1,37 @@
+version: "3"
+
+volumes:
+  semaphore-db: {}
+
+# networks:
+#   traefik:
+#     external: true
+
+services:
+  db:
+    restart: unless-stopped
+    image: mysql:8.0
+    hostname: mysql
+    volumes:
+      - semaphore-db:/var/lib/mysql
+    # networks:
+    #   - traefik
+    env_file:
+      - ./.mysql.env
+    labels:
+      - traefik.enable=false
+  
+  semaphore:
+    restart: unless-stopped
+    image: semaphoreui/semaphore:latest
+    # networks:
+    #   - traefik
+    depends_on:
+      - db
+    env_file:
+      - ./.semaphore.env
+    labels:
+      # - traefik.http.routers.semaphore.rule=Host(`semaphore.local.lan`)
+      #- traefik.http.routers.semaphore.priority=2000
+      #- traefik.http.routers.semaphore.entrypoints=web
+      # - traefik.http.services.semaphore.loadbalancer.server.port=3000
