@@ -1,21 +1,28 @@
-version: "2.4"
-services:
+version: "3"
 
+networks:
+  gitea: {}
+
+volumes:
+  db-data: {}
+  gitea-data: {}
+  drone-data: {}
+
+services:
   gitea:
-    image: gitea/gitea:1.19
+    image: gitea/gitea:1.21
     container_name: gitea-server
-    env_file:
-      - ./app/.env/gitea.env
     restart: unless-stopped
     networks:
       - gitea
-    volumes:
-      - ./app/data:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
       - "3022:22"
+    volumes:
+      - gitea-data:/data
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env/gitea.env
     depends_on:
       - db
   
@@ -23,17 +30,16 @@ services:
     image: drone/drone:2
     container_name: drone-ci
     restart: unless-stopped
-    env_file:
-      - ./drone/.env/drone.env
     networks:
       - gitea
     ports:
       - 4443:443
       - 18080:80
     volumes:
-      - ./drone/data:/data
-      - /etc/timezone:/etc/timezone:ro
+      - drone-data:/data
       - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env/drone.env
     depends_on:
       - gitea
 
@@ -41,30 +47,23 @@ services:
     image: drone/drone-runner-docker:1
     container_name: drone-runner-docker
     restart: unless-stopped
-    env_file:
-      - ./drone/.env/drone-runner-docker.env
     networks:
       - gitea
-    ports:
-      - 3001:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env/drone-runner-docker.env
     depends_on:
       - drone
   
   db:
-    image: mariadb:10.3-focal
+    image: mariadb:10.4-focal
     container_name: gitea-db
     restart: unless-stopped
-    env_file:
-      - ./db/.env/mariadb.env
     networks:
       - gitea
     volumes:
-      - ./db/data:/var/lib/mysql
-      
-networks:
-  gitea:
-    driver: bridge
+      - db-data:/var/lib/mysql
+    env_file:
+      - .env/mariadb.env
