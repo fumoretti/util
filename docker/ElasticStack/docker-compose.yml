@@ -1,7 +1,12 @@
-version: '3.7'
+---
+networks:
+  elk: {}
+
+volumes:
+  es-data: {}
+  es-snaps: {}
 
 services:
-
   # The 'setup' service runs a one-off script which initializes users inside
   # Elasticsearch — such as 'logstash_internal' and 'kibana_system' — with the
   # values of the passwords defined in the '.env' file. It also creates the
@@ -49,8 +54,8 @@ services:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
-      - ./ES-DATA/elasticsearch:/usr/share/elasticsearch/data:Z
-      - ./ES-DATA/snaps:/usr/share/elasticsearch/snaps:Z
+      - es-data:/usr/share/elasticsearch/data:Z
+      - es-snaps:/usr/share/elasticsearch/snaps:Z
     ports:
       - 9200:9200
       - 9300:9300
@@ -108,6 +113,4 @@ services:
       - elasticsearch
     restart: unless-stopped
 
-networks:
-  elk:
-    driver: bridge
+...
