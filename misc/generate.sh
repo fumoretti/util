@@ -27,5 +27,17 @@ openssl x509 -req -sha256 -days 1024 -in "${FILES_PREFIX}".csr -CA "${FILES_PREF
 
 ## import custom CA on linux OS
 
-sudo cp "${FILES_PREFIX}".CA.crt /usr/local/share/ca-certificates/
+echo "To import your new CA on Linux"
+
+echo "Debian/Ubuntu like Linux, as root:
+
+sudo cp ${FILES_PREFIX}.CA.crt /usr/local/share/ca-certificates/
 sudo update-ca-certificates
+
+"
+
+echo "Archlinux, exec as root:
+
+trust anchor --store ${FILES_PREFIX}.CA.crt
+
+"
