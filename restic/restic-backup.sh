@@ -20,8 +20,7 @@ ${BACKUP_SOURCE}/dir2/
 ${BACKUP_SOURCE}/dir3/"
 
 ## LOG GENERATOR
-exec 1>>${LOG_FILE}
-exec 2>&1
+exec &> >(tee -a "${LOG_FILE}")
 
 echo "$(date) - Starting RESTIC BACKUP
 
