@@ -1,14 +1,9 @@
-version: '2.4'
-
 volumes:
   kong-pgdata: {}
   konga-dbdata: {}
 
 networks:
-  kong-net:
-  haproxy:
-    name: haproxy
-    external: true
+  kong-net: {}
 
 services:
   kong:
@@ -18,7 +13,9 @@ services:
     restart: unless-stopped
     networks:
       - kong-net
-      - haproxy
+    ports:
+      - 8000:8000
+      - 8443:8443
     env_file:
       - ./.kong.env
     depends_on:
@@ -44,7 +41,6 @@ services:
     restart: unless-stopped
     networks:
       - kong-net
-      - haproxy
     ports:
       - 1337:1337
     env_file:
