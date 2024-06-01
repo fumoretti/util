@@ -55,5 +55,5 @@ sudo update-ca-certificates
 Archlinux:
 
 ```bash
-trust anchor --store ${FILES_PREFIX}.CA.crt
+sudo trust anchor --store ${FILES_PREFIX}.CA.crt
 ```
