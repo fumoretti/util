@@ -11,6 +11,8 @@ services:
     container_name: kong
     hostname: kong-api-gw
     restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - kong-net
     ports:
@@ -39,6 +41,8 @@ services:
     container_name: konga
     hostname: konga
     restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - kong-net
     ports:
@@ -66,6 +70,8 @@ services:
     container_name: kong-migrations
     hostname: kong-migrations
     restart: on-failure
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - kong-net
     env_file:
@@ -79,11 +85,28 @@ services:
     container_name: kong-migrations-up
     hostname: kong-migrations-up
     restart: on-failure
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - kong-net
     env_file:
       - ./.kong.env
     command: kong migrations up && kong migrations finish
+    depends_on:
+      - kong-db
+
+  kong-migrations-finish:
+    image: kong:2.8
+    container_name: kong-migrations-finish
+    hostname: kong-migrations-finish
+    restart: on-failure
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - kong-net
+    env_file:
+      - ./.kong.env
+    command: kong migrations finish
     depends_on:
       - kong-db
 
