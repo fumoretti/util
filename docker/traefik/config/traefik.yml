@@ -68,3 +68,17 @@ providers:
     directory: /etc/traefik
     watch: true
 
+serversTransport:
+  insecureSkipVerify: false
+
+#if you need https to backend you need to set at least the serverName (rootCAs only for custom CA certificate) to the same of certificate SAN since docker ip can vary a lot. On docker service label add:
+#       - "traefik.http.services.myservice.loadbalancer.serversTransport=mytrasport@file"
+#       - "traefik.http.services.myservice.loadbalancer.server.scheme=https"
+#       - "traefik.http.services.myservice.loadbalancer.server.port=443"
+# ref.: https://github.com/traefik/traefik/issues/7454
+
+#http:
+#  serversTransports:
+#    mytransport:
+#      serverName: myservice.local.lan
+#      rootCAs: /certs/local.lan.CA.crt
