@@ -50,7 +50,8 @@ entryPoints:
 #       httpChallenge:
 #         entryPoint: web
 
-# Local cert files Stores
+# Local cert files
+## default single domain cert
 tls:
   stores:
     default:
@@ -61,6 +62,18 @@ tls:
   options:
     default:
       minVersion: VersionTLS12
+
+## multi domains cert files, autodetect by domain
+#tls:
+#  options:
+#    default:
+#      minVersion: VersionTLS12
+#  certificates:
+#    - certFile: /certs/example.local.lan.crt
+#      keyFile: /certs/example.local.lan.key
+#    - certFile: /certs/example.local2.lan.crt
+#      keyFile: /certs/example.local2.lan.key
+
 
 providers:
   docker:

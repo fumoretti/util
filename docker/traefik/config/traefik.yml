@@ -62,7 +62,7 @@ entryPoints:
 
 providers:
   docker:
-    exposedByDefault: true
+    exposedByDefault: false
   file:
     # watch for dynamic configuration changes
     directory: /etc/traefik
