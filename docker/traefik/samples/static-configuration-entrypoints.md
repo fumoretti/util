@@ -39,19 +39,36 @@ entryPoints:
       tls: true
 ```
 
-TLS store with local certificate files.
+## TLS store and certFiles Dynamic config
+
+TLS default store with local certificate files.
 
 ```yaml
+## default single domain cert
 tls:
   stores:
     default:
       defaultCertificate:
         certFile: /certs/local.lan.crt
         keyFile: /certs/local.lan.key
-#TLS 1.2 as minimal
+#Disable TLS version 1.0 and 1.1
   options:
     default:
       minVersion: VersionTLS12
+```
+
+TLS multi domains cert files, autodetect by domain during routing.
+
+```yaml
+tls:
+ options:
+   default:
+     minVersion: VersionTLS12
+ certificates:
+   - certFile: /certs/example.local.lan.crt
+     keyFile: /certs/example.local.lan.key
+   - certFile: /certs/example.local2.lan.crt
+     keyFile: /certs/example.local2.lan.key
 ```
 
 ## HTTP with redirect all to HTTPS

@@ -25,7 +25,7 @@ entryPoints:
 
 ## TCP HostSNI with TLS passthrough
 
-When you need to serve a HTTPs docker service that manage your own public CA certificates. That way traefik expose the HTTPs port of the docker backend passing TLS over TCP avoinding the needs of HTTPS TLS on the traefik entrypoint too.
+When you need to serve a HTTPs or TCP docker service that manage your own public CA certificates. That way traefik expose the port of the docker backend passing TLS over TCP avoinding the needs of TLS negotiation on the traefik entrypoint too.
 
 ```yaml
 labels:
@@ -33,6 +33,30 @@ labels:
 - "traefik.tcp.routers.myapp.tls.passthrough=true"
 - "traefik.tcp.services.myapp.loadbalancer.server.port=443"
 ```
+
+## TCP HostSNI with TLS termination on traefik
+
+When you need to serve a TCP port secured by TLS for service that support SSL/TLS (Eg.: postgreSQL) and route it based on SNI, but don't want to add certificates on each backend service.
+
+```yaml
+- "traefik.enable=true"
+- "traefik.tcp.routers.postgres.rule=HostSNI(`postgres.local.lan`)"
+- "traefik.tcp.routers.postgres.entrypoints=pgsecure"
+- "traefik.tcp.routers.postgres.tls=true"
+- "traefik.tcp.routers.postgres.tls.passthrough=false"
+- "traefik.tcp.routers.portgres.service=postgres@docker"
+- "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
+```
+
+Entrypoint for 5432 port in traefik Dynamic conf file:
+
+```yaml
+entryPoints:
+  pgsecure:
+    address: :5432
+```
+
+For the tls certs you can use a Default Store like in HTTPS examples... or specify certFiles.
 
 ## HTTPs terminated in traefik (plain HTTP backend)
 
