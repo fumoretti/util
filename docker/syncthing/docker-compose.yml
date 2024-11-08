@@ -1,0 +1,28 @@
+---
+networks:
+  syncthing:
+    name: traefik
+    external: true
+
+services:
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./config:/config
+      - ./data:/data
+    networks:
+      - syncthing
+    ports:
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.syncthing.rule=Host(`syncthing.local.lan`)
+      - traefik.http.services.syncthing.loadbalancer.server.port=8384

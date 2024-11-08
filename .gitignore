@@ -372,3 +372,5 @@ docker/plex/media/*
 docker/pihole/etc-*/*
 docker/grafana-loki/promtail/tmp
 docker/traefik/logs
+docker/syncthing/data*
+docker/syncthing/config

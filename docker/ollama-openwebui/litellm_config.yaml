@@ -1,0 +1,14 @@
+model_list:
+  - model_name: mymodel
+    litellm_params:
+      model: azure/deployment-name
+      api_base: os.environ/AZURE_API_BASE
+      api_key: os.environ/AZURE_API_KEY
+      api_version: "2024-08-01-preview"
+      temperature: 0.5
+  - model_name: myothermodel
+    litellm_params:
+      model: azure/other-deployment-name
+      api_base: os.environ/AZURE_API_BASE
+      api_key: os.environ/AZURE_API_KEY
+      api_version: "2023-05-15"

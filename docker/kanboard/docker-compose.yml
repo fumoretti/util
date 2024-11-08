@@ -1,0 +1,39 @@
+
+volumes:
+  kanboard_data: {}
+  kanboard_plugins: {}
+  kanboard_ssl: {}
+  kanboard-db: {}
+
+networks:
+  kanboard:
+    name: traefik
+    external: true
+
+services:
+  kanboard:
+    image: kanboard/kanboard:v1.2.37
+    restart: unless-stopped
+    volumes:
+      - kanboard_data:/var/www/app/data
+      - kanboard_plugins:/var/www/app/plugins
+      - kanboard_ssl:/etc/nginx/ssl
+    networks:
+      - kanboard
+    env_file:
+      - .kanboard.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kanboard.rule=Host(`kanboard.local.lan`)"  
+      - "traefik.http.routers.kanboard.entrypoints=websecure"
+      - "traefik.http.services.kanboard.loadbalancer.server.port=80"
+  
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    env_file:
+      - .kanboard-db.env
+    volumes:
+      - kanboard-db:/var/lib/mysql
+    networks:
+      - kanboard

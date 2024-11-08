@@ -1,14 +1,14 @@
-version: "3"
-
 networks:
   loki:
+    name: traefik
+    external: true
 
 volumes:
   loki-data: {}
 
 services:
   loki:
-    image: grafana/loki:2.9.0
+    image: grafana/loki:3.2.1
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -18,7 +18,7 @@ services:
       - loki
 
   promtail:
-    image: grafana/promtail:2.9.0
+    image: grafana/promtail:3.2.1
     command: -config.file=/etc/promtail/config.yml
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -29,17 +29,25 @@ services:
       - loki
 
   grafana:
-    image: grafana/grafana:10.1.1
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "3080:3000"
+    image: grafana/grafana:11.2.3
+    restart: unless-stopped
     networks:
-      - loki
+      - grafana
+    expose:
+      - 3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
     env_file:
       - ./.grafana.env
     depends_on:
       - loki
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.local.lan`)"
+      - "traefik.http.routers.grafana.service=grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     entrypoint:
       - sh
       - -euc

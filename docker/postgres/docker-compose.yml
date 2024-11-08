@@ -1,0 +1,28 @@
+networks:
+  postgres:
+    name: traefik
+    external: true
+
+volumes:
+  pg-data: {}
+
+services:
+  postgres:
+    image: postgres:16
+    hostname: postgres
+    restart: unless-stopped
+    networks:
+      - postgres
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - pg-data:/var/lib/postgresql/data
+    env_file:
+      - .pg.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.postgres.rule=HostSNI(`postgres.local.lan`)"
+      - "traefik.tcp.routers.postgres.entrypoints=pgsecure"
+      - "traefik.tcp.routers.postgres.tls=true"
+      - "traefik.tcp.routers.postgres.tls.passthrough=false"
+      - "traefik.tcp.routers.portgres.service=postgres@docker"
+      - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"

@@ -1,0 +1,64 @@
+networks:
+  n8n:
+    name: traefik
+    external: true
+
+volumes:
+  n8n_data: {}
+  qdrant_data: {}
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: unless-stopped
+    networks:
+      - n8n
+    expose:
+      - 5678
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.n8n.rule=Host(`${SUBDOMAIN}.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.n8n.entrypoints=websecure"
+      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
+      - "traefik.http.middlewares.n8n.headers.SSLRedirect=true"
+      - "traefik.http.middlewares.n8n.headers.STSSeconds=315360000"
+      - "traefik.http.middlewares.n8n.headers.browserXSSFilter=true"
+      - "traefik.http.middlewares.n8n.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.n8n.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.n8n.headers.SSLHost=${DOMAIN_NAME}"
+      - "traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true"
+      - "traefik.http.middlewares.n8n.headers.STSPreload=true"
+      - "traefik.http.routers.n8n.middlewares=n8n@docker"
+    env_file:
+      - .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - n8n_data:/home/node/.n8n
+      - ./rag-files:/files
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    hostname: qdrant
+    networks:
+      - n8n
+    # ports:
+    #   - 6333:6333
+    #   - 6334:6334
+    expose:
+      - 6333
+      - 6334
+      - 6335
+    volumes:
+      - qdrant_data:/qdrant/storage
+      - ./qdrant-config.yaml:/qdrant/config/production.yaml
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qdrant.rule=Host(`qdrant.local.lan`)"
+      - "traefik.http.routers.qdrant.entrypoints=websecure"
+      - "traefik.http.services.qdrant.loadbalancer.server.port=6333"
+  
+
+
+
+
