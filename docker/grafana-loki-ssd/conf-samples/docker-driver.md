@@ -13,6 +13,8 @@ logging:
   driver: loki
   options:
     loki-url: "http://user:password@loki.local.lan:3100/loki/api/v1/push"
+    loki-max-backoff: "1s"
+    loki-retries: 3
 ```
 
 ## Loi driver as default in daemon.json
@@ -25,7 +27,9 @@ With loki:
     "log-driver": "loki",
     "log-opts": {
         "loki-url": "http://user:password@loki.local.lan:3100/loki/api/v1/push",
-        "loki-batch-size": "400"
+        "loki-batch-size": "50000",
+        "loki-max-backoff": "1s",
+        "loki-retries": "3"
     },
     "data-root": "/home/var-lib-docker",
     "default-address-pools": [
@@ -34,7 +38,7 @@ With loki:
              "size": 27
           }
   ]
-  }
+}
 ```
 
 Without loki:
