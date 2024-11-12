@@ -12,7 +12,7 @@ docker plugin install grafana/loki-docker-driver:3.2.1 --alias loki --grant-all-
 logging:
   driver: loki
   options:
-    loki-url: "http://user:password@loki.local.lan:3100/loki/api/v1/push"
+    loki-url: "http://loki:changeme@loki.local.lan:3100/loki/api/v1/push"
     loki-max-backoff: "1s"
     loki-retries: 3
 ```
@@ -26,7 +26,7 @@ With loki:
     "debug" : true,
     "log-driver": "loki",
     "log-opts": {
-        "loki-url": "http://user:password@loki.local.lan:3100/loki/api/v1/push",
+        "loki-url": "http://loki:changeme@loki.local.lan:3100/loki/api/v1/push",
         "loki-batch-size": "50000",
         "loki-max-backoff": "1s",
         "loki-retries": "3"

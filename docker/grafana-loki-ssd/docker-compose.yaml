@@ -3,6 +3,7 @@ networks:
   loki:
 
 volumes:
+  grafana-data: {}
   minio-data: {}
 
 services:
@@ -71,12 +72,16 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.d:/etc/nginx/conf.d:ro
+      - ./.loki.htpasswd:/etc/nginx/.loki.htpasswd:ro
+      - ./certs:/certs:ro
     entrypoint:
       - sh
       - -euc
       - /docker-entrypoint.sh nginx -g "daemon off;"
     ports:
-      - "3100:3100"
+      - 443:443
+      - 3100:3100
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
       interval: 10s
@@ -84,6 +89,28 @@ services:
       retries: 5
     networks:
       - loki
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    restart: unless-stopped
+    expose:
+      - 3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+    env_file:
+      - .grafana.env
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - loki
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "loki.local.lan:host-gateway"
 
   minio:
     image: minio/minio
@@ -94,11 +121,12 @@ services:
       - |
         mkdir -p /data/loki-data && \
         mkdir -p /data/loki-ruler && \
-        minio server /data
+        minio server /data --console-address "0.0.0.0:9001"
     env_file:
       - .minio.env
     expose:
       - 9000
+      - 9001
     volumes:
       - minio-data:/data
     healthcheck:
