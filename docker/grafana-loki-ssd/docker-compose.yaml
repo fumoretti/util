@@ -5,6 +5,7 @@ networks:
 volumes:
   grafana-data: {}
   minio-data: {}
+  backend-compactor: {}
 
 services:
   read:
@@ -54,6 +55,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./loki-config.yaml:/etc/loki/config.yaml
+      - backend-compactor:/tmp
     expose:
       - "3100"
       - "7946"

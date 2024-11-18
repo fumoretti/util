@@ -33,7 +33,7 @@ common:
       insecure: true
       bucketnames: loki-data
       access_key_id: loki
-      secret_access_key: 1e113cff5bc1045197ab0b12
+      secret_access_key: 0281eb44768394495f661d2e02eb
       s3forcepathstyle: true
   ring:
     kvstore:
@@ -43,5 +43,17 @@ ruler:
     s3:
       bucketnames: loki-ruler
 
+limits_config:
+  retention_period: 168h
+  retention_stream:
+  - selector: '{host="dev-tests.local.lan"}'
+    priority: 1
+    period: 24h
+
 compactor:
-  working_directory: /tmp/compactor
+  working_directory: /tmp
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 2h
+  retention_delete_worker_count: 150
+  delete_request_store: s3
