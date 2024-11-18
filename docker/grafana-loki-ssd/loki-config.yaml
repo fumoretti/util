@@ -43,5 +43,17 @@ ruler:
     s3:
       bucketnames: loki-ruler
 
+limits_config:
+  retention_period: 168h
+  retention_stream:
+  - selector: '{host="dev-tests.local.lan"}'
+    priority: 1
+    period: 24h
+
 compactor:
-  working_directory: /tmp/compactor
+  working_directory: /tmp
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 2h
+  retention_delete_worker_count: 150
+  delete_request_store: s3
