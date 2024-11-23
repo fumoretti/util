@@ -1,0 +1,60 @@
+# just declarative sample of a httpbin.org service with common plugins, consumer and auth in the route
+# make sure to change sensitive data like keys/credentials and minimal format/kong version
+_format_version: "1.4"
+_info:
+  select_tags:
+  - httpbin3
+
+services:
+- name: httpbin3
+  url: http://httpbin-lb1/anything
+  routes:
+  - name: httpbin3
+    hosts:
+      - kong.local.lan
+    paths:
+      - /httpbin3
+    protocols:
+      - http
+      - https
+    strip_path: true
+    plugins:
+    - name: jwt
+      config:
+        secret_is_base64: false
+      enabled: false
+    - name: acl
+      config:
+        allow:
+          - httpbin3
+        hide_groups_header: true
+      enabled: false
+    - name: correlation-id
+      config:
+        generator: uuid#counter
+        header_name: X-Request-Id
+        echo_downstream: true
+      enabled: true
+    - name: request-transformer
+      config:
+        remove:
+          headers:
+            - Authorization
+            - X-Consumer-Id
+            - X-Consumer-Username
+            - X-Credential-Identifier
+            - X-Credential-Username
+        #to add upstream service Authorization header if needed
+        # add:
+        #   headers:
+        #     - "Authorization:Bearer 123456789"
+      enabled: true
+
+consumers:
+- username: httpbin3
+  jwt_secrets:
+  - algorithm: HS256
+    key: 4becd19afe10e40d0e8e12c6a38abd4dbf245a08e1c9fc8a
+    secret: 2dc241e75d5f1575f71a7295ea77872f6fdbc3f80bdf39b3809648f8b3fd9c86
+  acls:
+  - group: httpbin3
