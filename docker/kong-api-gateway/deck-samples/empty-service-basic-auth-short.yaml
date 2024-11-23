@@ -1,0 +1,52 @@
+_format_version: "1.1"
+_info:
+  select_tags:
+  - httpbin4
+
+services:
+- name: httpbin4
+  url: http://httpbin.org/anything
+  routes:
+  - name: httpbin4
+    hosts:
+      - kong.local.lan
+    paths:
+      - /httpbin4
+    protocols:
+      - https
+    strip_path: true
+  plugins:
+  - name: basic-auth
+    config:
+      hide_credentials: true
+  - name: acl
+    config:
+      allow:
+        - httpbin4
+      hide_groups_header: true
+  - name: correlation-id
+    config:
+      generator: uuid#counter
+      header_name: X-Request-Id
+      echo_downstream: true
+  - name: request-transformer
+    config:
+      remove:
+        headers:
+        - Authorization
+        - X-Consumer-Id
+        - X-Consumer-Username
+        - X-Credential-Identifier
+        - X-Credential-Username
+      #to add upstream service Authorization header if needed
+      # add:
+      #   headers:
+      #     - "Authorization:Bearer 123456789"
+
+consumers:
+- username: httpbin4
+  basicauth_credentials:
+    - password: d381d244dd48807e
+      username: httpbin4
+  acls:
+  - group: httpbin4
