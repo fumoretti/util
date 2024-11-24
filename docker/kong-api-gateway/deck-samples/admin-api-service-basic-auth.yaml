@@ -1,0 +1,38 @@
+# declarative sample to create a service/route for the internal admin-api and protect it with basic auth
+# make sure to change sensitive data like keys/credentials and minimal format/kong version
+_format_version: "1.4"
+_info:
+  select_tags:
+  - admin-api
+
+services:
+- name: admin-api
+  url: http://kong:8001/
+  routes:
+  - name: admin-api
+    hosts:
+      - kong.local.lan
+    paths:
+      - /admin-api
+    protocols:
+      - https
+    strip_path: true
+    plugins:
+    - name: basic-auth
+      config:
+        hide_credentials: true
+      enabled: true
+    - name: acl
+      config:
+        allow:
+          - admin-api
+        hide_groups_header: true
+      enabled: true
+
+consumers:
+- username: admin-api
+  basicauth_credentials:
+    - password: 996803a04fb0121e2c17
+      username: admin
+  acls:
+  - group: admin-api

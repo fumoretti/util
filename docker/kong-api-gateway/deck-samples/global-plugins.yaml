@@ -1,0 +1,20 @@
+# deck sample to enable global scoped useful plugins
+# enabled (recommended): log-file that dump all proxy events to /dev/stdout of kong container to be captured later by centralized log solution like Grafana Loki or Elastic Stack
+# disabled (optional): prometheus metrics exporter that enable :8001/metrics endpoint to be scraped later by prometheus.
+_format_version: "1.4"
+_info:
+  select_tags:
+  - global-plugins
+
+plugins:
+- name: file-log
+  config:
+    custom_fields_by_lua:
+      logtype: return "proxy"
+    path: /dev/stdout
+    reopen: true
+  enabled: true
+- name: prometheus
+  enabled: false
+
+  

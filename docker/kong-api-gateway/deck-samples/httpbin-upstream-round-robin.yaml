@@ -9,14 +9,16 @@ upstreams:
   algorithm: round-robin
   healthchecks:
     active:
-      http_path: /anything/healthcheck
+      http_path: /anything
       healthy:
         http_statuses:
           - 200
         successes: 3
-        interval: 0 #active check disabled
+        #interval 0 means active check disabled. Caution, prometheus plugin can generate excessive upstream helth errors when active check disabled
+        interval: 5
       unhealthy:
-        interval: 5 #active enabled only when passive marks as unhealthy
+        #when healthy interval 0, active will be enabled only when passive marks as unhealthy
+        interval: 10
     passive:
       type: http
       healthy:
