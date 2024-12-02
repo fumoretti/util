@@ -1,0 +1,43 @@
+global:
+  airbyteUrl: https://airbyte.local.lan
+  auth:
+    enabled: true
+
+server:
+  # resources:
+  #    requests:
+  #      memory: 256Mi
+  #     #  cpu: 250m
+  #    limits:
+  #     #  cpu: 300m
+  #      memory: 4Gi
+
+  extraVolumes:
+    - name: ca-certificates
+      configMap:
+        name: ca-certificates
+
+  extraVolumeMounts:
+    - name: ca-certificates
+      mountPath: /etc/ssl/certs/ca.crt
+      subPath: ca.crt
+
+webapp:
+  extraVolumes:
+    - name: ca-certificates
+      configMap:
+        name: ca-certificates
+
+  extraVolumeMounts:
+    - name: ca-certificates
+      mountPath: /etc/ssl/certs/ca.crt
+      subPath: ca.crt
+
+# workload-launcher:
+#   resources:
+#      requests:
+#        memory: 1Gi
+#       #  cpu: 250m
+#      limits:
+#       #  cpu: 300m
+#        memory: 4Gi
