@@ -1,6 +1,6 @@
 # Gitea + Drone-CI stack
 
-An amazing open and lightweight GIT platform. Added DRONE-CI as CI/CD platform.
+An amazing open and lightweight GIT platform. Added Actios Runner and DRONE-CI as optional CI/CD platform.
 
 Enjoy.
 
