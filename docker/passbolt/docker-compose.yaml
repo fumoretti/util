@@ -1,0 +1,59 @@
+volumes:
+  db_data:
+  gpg_volume:
+  jwt_volume:
+
+networks:
+  passbolt:
+    name: traefik
+    external: true
+
+services:
+  passbolt:
+    image: passbolt/passbolt:4.9.1-1-ce
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file:
+      - .passbolt.env
+    volumes:
+      - gpg_volume:/etc/passbolt/gpg
+      - jwt_volume:/etc/passbolt/jwt
+      - ./certs/local.lan.crt:/etc/ssl/certs/certificate.crt:ro
+      - ./certs/local.lan.key:/etc/ssl/certs/certificate.key:ro
+    networks:
+      - passbolt
+    command:
+      [
+        "/usr/bin/wait-for.sh",
+        "-t",
+        "0",
+        "db:3306",
+        "--",
+        "/docker-entrypoint.sh",
+      ]
+    labels:
+      - "traefik.enable=true"
+      # HTTPS TLS termination on traefik. Needs PASSBOLT_SSL_FORCE=false
+      - "traefik.http.routers.passbolt.rule=Host(`passbolt.local.lan`)"
+      - "traefik.http.routers.passbolt.entrypoints=websecure"
+      - "traefik.http.services.passbolt.loadbalancer.server.scheme=http"
+      - "traefik.http.services.passbolt.loadbalancer.server.port=80"
+      # TCP tls passthrought. Needs PASSBOLT_SSL_FORCE=true and valid certs on passbolt
+      # - "traefik.tcp.routers.passbolt.rule=HostSNI(`passbolt.local.lan`)"
+      # - "traefik.tcp.routers.passbolt.entrypoints=websecure"
+      # - "traefik.tcp.routers.passbolt.tls.passthrough=true"
+      # - "traefik.tcp.services.passbolt.loadbalancer.server.port=443"
+
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    env_file:
+      - .db.env
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - passbolt
+    labels:
+      - traefik.enable=false
+
