@@ -1,0 +1,48 @@
+name: Deploy deck files
+on:
+  push:
+    paths:
+      - 'kong-deck/**'
+
+jobs:
+  rync-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Prepare runner
+        run: |
+          apt update
+          apt-get install -y rsync
+      
+      - name: Prepare RSA keys
+        run: |
+          echo "${{ secrets.PC_HOST_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ vars.PC_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Validate SSH connectivity
+        run: |
+          ssh ${{ secrets.PC_HOST_USER }}@${{ vars.PC_HOST }} "uptime" || exit 2
+
+      - name: Sync Deck Files to backup on host
+        run: |
+          rsync -rvt --delete --exclude="logs/" ./kong-deck ${{ secrets.PC_HOST_USER }}@${{ vars.PC_HOST }}:~/docker/kong-api-gateway/
+
+      - name: Validate deck connectivity and files
+        run: |
+            cd kong-deck
+            export DECK_KONG_ADDR="${{ vars.KONG_URL }}"
+            ./bin/deck --headers "Authorization: basic ${{ secrets.KONG_ADMIN_KEY }}" gateway ping
+            ./bin/deck --headers "Authorization: basic ${{ secrets.KONG_ADMIN_KEY }}" gateway validate *.y*ml
+            ./bin/deck --headers "Authorization: basic ${{ secrets.KONG_ADMIN_KEY }}" gateway diff *.y*ml
+
+      - name: Sync deck files
+        run: |
+            cd kong-deck
+            export DECK_KONG_ADDR="${{ vars.KONG_URL }}"
+            for deck_file in *.y*ml ; do ./bin/deck --headers "Authorization: basic ${{ secrets.KONG_ADMIN_KEY }}" gateway sync ${deck_file} ; done
+
+
+

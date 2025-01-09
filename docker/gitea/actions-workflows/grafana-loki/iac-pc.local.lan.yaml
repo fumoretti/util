@@ -1,0 +1,43 @@
+---
+name: IaC deploy Grafana Loki SSD
+on:
+  push:
+    paths-ignore:
+      - 'loki-config.yaml'
+      - 'nginx.conf'
+      - 'nginx.d/**'
+
+env:
+  STACK_DIR: '~/docker/grafana-loki-ssd'
+
+jobs:
+  rsync-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: Prepare Runner
+        run: |
+          apt update && apt-get install -y rsync
+
+      - name: Deploy Grafana Loki to Docker Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          ARGS: "-rlgoDzvc -i --delete"
+          SSH_PRIVATE_KEY: ${{ secrets.PC_HOST_KEY }}
+          REMOTE_USER: ${{ secrets.PC_HOST_USER }}
+          REMOTE_HOST: ${{ vars.PC_HOST }}
+          SOURCE: "/"
+          TARGET: "${{ env.STACK_DIR}}/"
+          EXCLUDE: "logs/, .git*"
+          SCRIPT_BEFORE: |
+            echo "Current compose services"
+            cd ${{ env.STACK_DIR}}/ || exit 2
+            docker compose ps
+          SCRIPT_AFTER: |
+            cd ${{ env.STACK_DIR}}/ || exit 2
+            chmod 600 .*.env
+            chmod 660 .grafana.env
+            docker compose up -d
+            rm -f local_ssh_script-before-*

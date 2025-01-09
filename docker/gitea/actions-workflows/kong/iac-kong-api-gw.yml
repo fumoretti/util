@@ -1,0 +1,39 @@
+name: Deploy kong api gw docker stack
+on:
+  push:
+    paths:
+      - 'kong-api-gw/**'
+
+jobs:
+  rync-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Prepare runner
+        run: |
+          apt update
+          apt-get install -y rsync
+      
+      - name: Deploy Kong Stack to Docker Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          ARGS: "-rlgoDzvc -i --delete"
+          SSH_PRIVATE_KEY: ${{ secrets.PC_HOST_KEY }}
+          REMOTE_USER: ${{ secrets.PC_HOST_USER }}
+          REMOTE_HOST: ${{ vars.PC_HOST }}
+          SOURCE: "kong-api-gw/"
+          TARGET: "~/docker/kong-api-gateway/"
+          EXCLUDE: "logs/, kong-samples, kong-deck/"
+          SCRIPT_BEFORE: |
+            echo "Current compose services"
+            cd ~/docker/kong-api-gateway/ || exit 2
+            docker compose ps
+          SCRIPT_AFTER: |
+            cd ~/docker/kong-api-gateway/
+            chmod 600 .*.env
+            chmod 660 .grafana.env
+            docker compose up -d --remove-orphans
+            sleep 15
+            docker compose restart
