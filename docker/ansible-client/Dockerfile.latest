@@ -1,0 +1,10 @@
+FROM debian:sid
+
+RUN apt-get update
+RUN apt-get install -y ansible sshpass vim nano iputils-ping
+
+RUN useradd -ms /bin/bash -u 1000 ansible
+
+WORKDIR /home/ansible
+USER ansible
+
