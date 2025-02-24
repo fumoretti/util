@@ -1,0 +1,34 @@
+{
+    "name": "Devops Container",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "--network=host"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [ 
+                "ms-vscode.remote-explorer",
+                "redhat.ansible",
+                "redhat.vscode-yaml",
+                "hashicorp.terraform",
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers-extra/features/ansible:2": {},
+        "ghcr.io/hspaans/devcontainer-features/ansible-lint:1": {},
+        "ghcr.io/devcontainers/features/terraform:1": {},
+        "ghcr.io/hspaans/devcontainer-features/sshpass:1": {},
+        "ghcr.io/devcontainers/features/aws-cli:1": {},
+        "ghcr.io/devcontainers/features/azure-cli:1": {},
+        "ghcr.io/devcontainers/features/powershell:1": {},
+        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+        "ghcr.io/devcontainers-extra/features/curl-apt-get:1": {},
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
+        "ghcr.io/guiyomh/features/vim:0": {}
+    }
+}
