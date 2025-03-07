@@ -1,34 +1,43 @@
 {
-    "name": "Devops Container",
+    "name": "devops-tools",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "args": {
+            "LOCAL_USER": "${localEnv:USER}",
+            // ansible legacy (2.16.x) will be installed via pipx if ANSIBLE_VERSION < 2.18, otherwise the latest package from debian unstable will be used
+            // recommended 2.18
+            "ANSIBLE_VERSION": "2.16",
+            "TIMEZONE": "America/Sao_Paulo"
+        }
     },
     "runArgs": [
-        "--network=host"
+        "--network=host",
+        // "--add-host=host.docker.internal:host-gateway",
+        "--name=vsc-${localEnv:USER}-devops-tools"
     ],
+    "forwardPorts": [],
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind,consistency=cached"
+    ],
+    "postStartCommand": "",
+    "remoteUser": "${localEnv:USER}",
+    "containerUser": "${localEnv:USER}",
+    "updateRemoteUserUID": true,
     "customizations": {
         "vscode": {
             "extensions": [ 
                 "ms-vscode.remote-explorer",
                 "redhat.ansible",
                 "redhat.vscode-yaml",
-                "hashicorp.terraform",
-                "ms-azuretools.vscode-docker"
+                // "hashicorp.terraform",
+                // "ms-azuretools.vscode-docker",
+                "timonwong.shellcheck"
             ]
         }
     },
     "features": {
-        "ghcr.io/devcontainers-extra/features/ansible:2": {},
-        "ghcr.io/hspaans/devcontainer-features/ansible-lint:1": {},
-        "ghcr.io/devcontainers/features/terraform:1": {},
-        "ghcr.io/hspaans/devcontainer-features/sshpass:1": {},
-        "ghcr.io/devcontainers/features/aws-cli:1": {},
-        "ghcr.io/devcontainers/features/azure-cli:1": {},
-        "ghcr.io/devcontainers/features/powershell:1": {},
-        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-        "ghcr.io/devcontainers-extra/features/curl-apt-get:1": {},
-        "ghcr.io/devcontainers/features/git:1": {},
-        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
-        "ghcr.io/guiyomh/features/vim:0": {}
+        // "ghcr.io/devcontainers/features/terraform:1": {},
+        //"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+        // "ghcr.io/devcontainers/features/powershell:1": {}
     }
 }
