@@ -1,19 +1,19 @@
 {
-    "name": "devops-tools",
+    "name": "ansible-latest",
     "build": {
-        "dockerfile": "Dockerfile",
+        "dockerfile": "../base-containers/Dockerfile.devops",
         "args": {
             "LOCAL_USER": "${localEnv:USER}",
             // ansible legacy (2.16.x) will be installed via pipx if ANSIBLE_VERSION < 2.18, otherwise the latest package from debian unstable will be used
             // recommended 2.18
-            "ANSIBLE_VERSION": "2.16",
+            "ANSIBLE_VERSION": "2.18",
             "TIMEZONE": "America/Sao_Paulo"
         }
     },
     "runArgs": [
-        "--network=host",
         // "--add-host=host.docker.internal:host-gateway",
-        "--name=vsc-${localEnv:USER}-devops-tools"
+        // "--name=vsc-${localEnv:USER}-devops-tools",
+        "--network=host"
     ],
     "forwardPorts": [],
     "mounts": [
@@ -29,6 +29,7 @@
                 "ms-vscode.remote-explorer",
                 "redhat.ansible",
                 "redhat.vscode-yaml",
+                "hediet.vscode-drawio",
                 // "hashicorp.terraform",
                 // "ms-azuretools.vscode-docker",
                 "timonwong.shellcheck"

@@ -17,4 +17,11 @@ else
     pipx ensurepath
     ln -s ~/.local/share/pipx/venvs/ansible/bin/ansible-lint ~/.local/bin/ansible-lint
 
+    echo "Enabling legacy SSH client Ciphers, Kex and Host key types"
+
+    echo 'HostKeyAlgorithms +ssh-rsa
+PubkeyAcceptedKeyTypes +ssh-rsa
+KexAlgorithms +diffie-hellman-group1-sha1
+Ciphers +aes128-cbc' | sudo tee -a /etc/ssh/ssh_config
+
 fi
