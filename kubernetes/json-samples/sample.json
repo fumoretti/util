@@ -1,0 +1,66 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Silva",
+      "active": true,
+      "roles": ["admin", "user"],
+      "profile": {
+        "email": "alice.silva@example.com",
+        "age": 30,
+        "nickname": null
+      }
+    },
+    {
+      "id": 2,
+      "name": "Bruno Souza",
+      "active": false,
+      "roles": ["user"],
+      "profile": {
+        "email": "bruno.souza@example.com",
+        "age": 25
+      }
+    }
+  ],
+  "settings": {
+    "theme": "dark",
+    "notificationsEnabled": true,
+    "lastLogin": null
+  },
+  "items": [
+    {
+      "sku": "A100",
+      "quantity": 100,
+      "price": 19.99,
+      "discount": 0.1e1
+    },
+    [
+      {"key": "value1"},
+      {"key": "value2"}
+    ]
+  ],
+  "posts": [
+    {
+      "title": "Olá Mundo",
+      "tags": ["intro", "json", "jq"],
+      "metadata": {
+        "published": true,
+        "views": 1500,
+        "ratings": [5, 4, 4.5]
+      }
+    }
+  ],
+  "metrics": {
+    "maxValue": 1e6,
+    "minValue": 0,
+    "average": 500000.5
+  },
+  "misc": {
+    "emoji": "🚀",
+    "quote": "Ele disse: \"JSON é fantástico!\""
+  },
+  "emptyArray": [],
+  "emptyObject": {},
+  "nullableField": null
+}
+

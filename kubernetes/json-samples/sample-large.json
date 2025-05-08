@@ -1,0 +1,352 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Silva",
+      "active": true,
+      "roles": ["admin", "user", "editor"],
+      "profile": {
+        "email": "alice.silva@example.com",
+        "age": 30,
+        "nickname": null,
+        "address": {
+          "street": "Rua das Flores",
+          "city": "São Paulo",
+          "zip": "01234-567",
+          "geo": { "lat": -23.55052, "lng": -46.633308 }
+        },
+        "preferences": {
+          "languages": ["pt", "en", "es"],
+          "newsletter": true,
+          "categories": ["tech", "music", "travel"]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Bruno Souza",
+      "active": false,
+      "roles": ["user"],
+      "profile": {
+        "email": "bruno.souza@example.com",
+        "age": 25,
+        "nickname": "Bruninho",
+        "address": {
+          "street": "Avenida Brasil",
+          "city": "Rio de Janeiro",
+          "zip": "20000-000",
+          "geo": { "lat": -22.906847, "lng": -43.172896 }
+        },
+        "preferences": {
+          "languages": ["pt"],
+          "newsletter": false,
+          "categories": []
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Carla Pereira",
+      "active": true,
+      "roles": ["user", "moderator"],
+      "profile": {
+        "email": "carla.pereira@example.com",
+        "age": 28,
+        "nickname": "Cacau",
+        "address": {
+          "street": "Rua do Ouvidor",
+          "city": "Belo Horizonte",
+          "zip": "30123-456",
+          "geo": { "lat": -19.916681, "lng": -43.934493 }
+        },
+        "preferences": {
+          "languages": ["pt", "fr"],
+          "newsletter": true,
+          "categories": ["food", "art"]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Daniel Costa",
+      "active": true,
+      "roles": ["user"],
+      "profile": {
+        "email": "daniel.costa@example.com",
+        "age": 35,
+        "nickname": null,
+        "address": {
+          "street": "Rua XV de Novembro",
+          "city": "Curitiba",
+          "zip": "80020-310",
+          "geo": { "lat": -25.4284, "lng": -49.2733 }
+        },
+        "preferences": {
+          "languages": ["pt", "en"],
+          "newsletter": false,
+          "categories": ["sports", "news"]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Eduarda Lima",
+      "active": false,
+      "roles": ["user", "contributor"],
+      "profile": {
+        "email": "eduarda.lima@example.com",
+        "age": 22,
+        "nickname": "Duda",
+        "address": {
+          "street": "Praça da Sé",
+          "city": "São Paulo",
+          "zip": "01001-000",
+          "geo": { "lat": -23.5505, "lng": -46.6333 }
+        },
+        "preferences": {
+          "languages": ["pt", "de"],
+          "newsletter": true,
+          "categories": ["science", "history"]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Felipe Ramos",
+      "active": true,
+      "roles": ["admin"],
+      "profile": {
+        "email": "felipe.ramos@example.com",
+        "age": 40,
+        "nickname": "Fê",
+        "address": {
+          "street": "Rua Sete de Setembro",
+          "city": "Porto Alegre",
+          "zip": "90010-000",
+          "geo": { "lat": -30.0277, "lng": -51.2287 }
+        },
+        "preferences": {
+          "languages": ["pt", "it"],
+          "newsletter": true,
+          "categories": ["economy", "tech"]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "Gabriela Torres",
+      "active": true,
+      "roles": ["user"],
+      "profile": {
+        "email": "gabriela.torres@example.com",
+        "age": 29,
+        "nickname": null,
+        "address": {
+          "street": "Avenida Paulista",
+          "city": "São Paulo",
+          "zip": "01310-100",
+          "geo": { "lat": -23.564, "lng": -46.654 }
+        },
+        "preferences": {
+          "languages": ["pt", "en"],
+          "newsletter": false,
+          "categories": ["art", "culture"]
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Hugo Fernandes",
+      "active": false,
+      "roles": ["user", "guest"],
+      "profile": {
+        "email": "hugo.fernandes@example.com",
+        "age": 33,
+        "nickname": "Hugão",
+        "address": {
+          "street": "Rua das Palmeiras",
+          "city": "Fortaleza",
+          "zip": "60000-000",
+          "geo": { "lat": -3.71722, "lng": -38.54306 }
+        },
+        "preferences": {
+          "languages": ["pt", "es"],
+          "newsletter": true,
+          "categories": ["travel"]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Isabela Moura",
+      "active": true,
+      "roles": ["user", "editor"],
+      "profile": {
+        "email": "isabela.moura@example.com",
+        "age": 27,
+        "nickname": "Bela",
+        "address": {
+          "street": "Rua das Acácias",
+          "city": "Recife",
+          "zip": "50000-000",
+          "geo": { "lat": -8.04756, "lng": -34.877 }
+        },
+        "preferences": {
+          "languages": ["pt"],
+          "newsletter": false,
+          "categories": ["music", "culture"]
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "João Martins",
+      "active": true,
+      "roles": ["user"],
+      "profile": {
+        "email": "joao.martins@example.com",
+        "age": 31,
+        "nickname": null,
+        "address": {
+          "street": "Rua da Praia",
+          "city": "Florianópolis",
+          "zip": "88010-000",
+          "geo": { "lat": -27.597, "lng": -48.5495 }
+        },
+        "preferences": {
+          "languages": ["pt", "en"],
+          "newsletter": true,
+          "categories": ["sports", "nature"]
+        }
+      }
+    }
+  ],
+  "settings": {
+    "theme": "dark",
+    "notificationsEnabled": true,
+    "lastLogin": "2025-05-06T14:30:00Z",
+    "security": {
+      "twoFactor": true,
+      "backupCodes": ["code1", "code2", "code3", null]
+    }
+  },
+  "items": [
+    {
+      "sku": "A100",
+      "quantity": 100,
+      "price": 19.99,
+      "discount": 1.0
+    },
+    {
+      "sku": "B200",
+      "quantity": 50,
+      "price": 9.5,
+      "discount": 0.05
+    },
+    {
+      "sku": "C300",
+      "quantity": 0,
+      "price": 5.0,
+      "discount": 0
+    }
+  ],
+  "posts": [
+    {
+      "id": 101,
+      "authorId": 1,
+      "title": "Olá Mundo",
+      "content": "Primeiro post no nosso blog testando JSON!",
+      "tags": ["intro", "json", "jq"],
+      "metadata": {
+        "published": true,
+        "publishDate": "2025-04-10",
+        "views": 1500,
+        "ratings": [5, 4, 4.5],
+        "comments": [
+          { "userId": 2, "comment": "Ótimo post!", "date": "2025-04-11" },
+          { "userId": 3, "comment": "Muito útil, obrigado.", "date": "2025-04-12" }
+        ]
+      }
+    },
+    {
+      "id": 102,
+      "authorId": 3,
+      "title": "Explorando jq",
+      "content": "Vamos aprender a usar jq para filtrar dados.",
+      "tags": ["jq", "filter", "tutorial"],
+      "metadata": {
+        "published": false,
+        "publishDate": null,
+        "views": 300,
+        "ratings": [],
+        "comments": []
+      }
+    },
+    {
+      "id": 103,
+      "authorId": 5,
+      "title": "Dicas de Viagem",
+      "content": "Top 10 destinos para 2025!",
+      "tags": ["travel", "tips", "2025"],
+      "metadata": {
+        "published": true,
+        "publishDate": "2025-03-20",
+        "views": 7800,
+        "ratings": [4, 5, 5, 4.5],
+        "comments": [
+          { "userId": 1, "comment": "Adorei as dicas!", "date": "2025-03-21" }
+        ]
+      }
+    },
+    {
+      "id": 104,
+      "authorId": 7,
+      "title": "Receitas Veganas",
+      "content": "Receita de lasanha de berinjela.",
+      "tags": ["food", "vegan", "recipe"],
+      "metadata": {
+        "published": true,
+        "publishDate": "2025-02-15",
+        "views": 2200,
+        "ratings": [5, 5, 4.5, 4],
+        "comments": []
+      }
+    },
+    {
+      "id": 105,
+      "authorId": 9,
+      "title": "Música Brasileira",
+      "content": "Os melhores álbuns de 2024.",
+      "tags": ["music", "brazil", "2024"],
+      "metadata": {
+        "published": true,
+        "publishDate": "2025-01-05",
+        "views": 4300,
+        "ratings": [4, 4, 4.5],
+        "comments": [
+          { "userId": 6, "comment": "Ótima seleção!", "date": "2025-01-06" }
+        ]
+      }
+    }
+  ],
+  "metrics": {
+    "maxValue": 1000000,
+    "minValue": 0,
+    "average": 500123.45,
+    "percentiles": {
+      "p50": 500000,
+      "p90": 900000,
+      "p99": 990000
+    }
+  },
+  "misc": {
+    "emoji": "🚀",
+    "quote": "Ele disse: \"JSON é fantástico!\"",
+    "unicodeTest": "中文, عربى, हिन्दी",
+    "multiline": "Linha1\nLinha2\nLinha3"
+  },
+  "emptyArray": [],
+  "emptyObject": {},
+  "nullableField": null
+}
+
