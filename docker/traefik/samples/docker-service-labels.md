@@ -10,6 +10,7 @@ Simple exposes a backend TCP port (eg. mariadb TCP/3306) routing it based on req
 
 ```yaml
 labels:
+- "traefik.enable=true"
 - "traefik.tcp.routers.myapp.rule=HostSNI(`myapp.local.lan`)"
 - "traefik.tcp.routers.myapp.entrypoints=mariadb"
 - "traefik.tcp.services.myapp.loadbalancer.server.port=3306"
@@ -29,6 +30,7 @@ When you need to serve a HTTPs or TCP docker service that manage your own public
 
 ```yaml
 labels:
+- "traefik.enable=true"
 - "traefik.tcp.routers.myapp.rule=HostSNI(`myapp.local.lan`)"
 - "traefik.tcp.routers.myapp.tls.passthrough=true"
 - "traefik.tcp.services.myapp.loadbalancer.server.port=443"
@@ -63,6 +65,7 @@ For the tls certs you can use a Default Store like in HTTPS examples... or speci
 Expose with HTTPs a non HTTPs backend, very common to do TLS termination in traefik side.
 
 ```yaml
+- "traefik.enable=true"
 - "traefik.http.routers.myapp.rule=Host(`myapp.local.lan`)"
 - "traefik.http.routers.myapp.entrypoints=websecure"
 - "traefik.http.services.myapp.loadbalancer.server.port=80"
@@ -73,6 +76,7 @@ Expose with HTTPs a non HTTPs backend, very common to do TLS termination in trae
 When a docker service app have self signed certificates without HTTPS downgrade option (like passbolt or PWM LDAP management apps).
 
 ```yaml
+- "traefik.enable=true"
 - "traefik.http.routers.myapp.rule=Host(`myapp.local.lan`)"
 - "traefik.http.services.myapp.loadbalancer.server.scheme=https"
 - "traefik.http.services.myapp.loadbalancer.server.port=443"
@@ -93,6 +97,7 @@ http:
 End to end TLS betwheen Traefik and Backend docker service.
 
 ```yaml
+- "traefik.enable=true"
 - "traefik.http.routers.myapp.rule=Host(`myapp.local.lan`)"
 - "traefik.http.services.myapp.loadbalancer.server.scheme=https"
 - "traefik.http.services.myapp.loadbalancer.server.port=443"
