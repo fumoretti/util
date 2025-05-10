@@ -1,0 +1,36 @@
+networks:
+  minio:
+    name: traefik
+    external: true
+
+volumes:
+  minio-data: {}
+
+services:
+  minio:
+    image: minio/minio
+    hostname: minio.local.lan
+    restart: unless-stopped
+    networks:
+      - minio
+    ports:
+      - 9000:9000 #api port with TLS
+      #- 9001:9001  #console port over Traefik
+    volumes:
+      - ./certs:/certs:ro
+      - minio-data:/data
+      - ./.env:/etc/config.env:ro
+      - /etc/localtime:/etc/localtime
+      - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+    env_file:
+      - .env
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        minio server /data --certs-dir /certs --console-address "0.0.0.0:9001"
+    labels:
+    - "traefik.enable=true"
+    - "traefik.tcp.routers.minio.rule=HostSNI(`minio.local.lan`)"
+    - "traefik.tcp.routers.minio.tls.passthrough=true"
+    - "traefik.tcp.services.minio.loadbalancer.server.port=9001"
