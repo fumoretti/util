@@ -1,11 +1,14 @@
 ---
 name: IaC deploy Grafana Loki SSD
 on:
+  workflow_dispatch:
   push:
     paths-ignore:
       - 'loki-config.yaml'
       - 'nginx.conf'
       - 'nginx.d/**'
+      - '.gitea/**'
+      - 'conf-samples/**'
 
 env:
   STACK_DIR: '~/docker/grafana-loki-ssd'
@@ -39,5 +42,22 @@ jobs:
             cd ${{ env.STACK_DIR}}/ || exit 2
             chmod 600 .*.env
             chmod 660 .grafana.env
+            chmod 660 .minio.env
+            chmod 660 certs/angel*
+            chmod 644 loki-config.yaml
+            chmod 644 prometheus.yml
+            chmod 660 docker-compose.yaml
+            chmod 755 nginx.conf
+            chmod -R 755 nginx.d/
+            #setfacl -m u:472:6 ldap.toml
             docker compose up -d
+            sleep 20
+            docker compose restart read
+            docker compose restart write
+            sleep 5
+            docker compose restart gateway
+            sleep 2
+            docker compose restart backend
+            docker compose restart prometheus
+            docker compose restart grafana
             rm -f local_ssh_script-before-*
