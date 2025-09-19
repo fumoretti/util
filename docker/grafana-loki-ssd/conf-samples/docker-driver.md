@@ -17,7 +17,7 @@ logging:
     loki-retries: 3
 ```
 
-## Loi driver as default in daemon.json
+## Loki driver as default in daemon.json
 
 With loki:
 
@@ -29,7 +29,10 @@ With loki:
         "loki-url": "http://loki:changeme@loki.local.lan:3100/loki/api/v1/push",
         "loki-batch-size": "50000",
         "loki-max-backoff": "1s",
-        "loki-retries": "3"
+        "loki-retries": "3",
+        "max-size": "128m",
+        "max-file": "5",
+        "keep-file": "true"
     },
     "data-root": "/home/var-lib-docker",
     "default-address-pools": [
