@@ -3,7 +3,7 @@
 AWS_REGION=${1:-us-east-1}
 AWS_SERVICE=${2:-s3}
 CURRENT_TIME=$(date +%d%m%Y_%H%M_%s)
-LIST_URL="https://ip-ranges.amazonaws.comm/ip-ranges.json"
+LIST_URL="https://ip-ranges.amazonaws.com/ip-ranges.json"
 LIST_DIR="/data"
 LIST_FILE=${LIST_DIR}/aws.${AWS_SERVICE}.${AWS_REGION}.${CURRENT_TIME}.txt
 
