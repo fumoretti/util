@@ -1,0 +1,32 @@
+networks:
+  traefik:
+    external: true
+volumes:
+  s2h-data: {}
+
+services:
+  shell2http:
+    build:
+      context: .
+      args:
+        S2H_VERSION: 1.17.0
+    restart: unless-stopped
+    networks:
+      - traefik
+    expose:
+      - 8080
+    volumes:
+      - s2h-data:/data:rw
+    environment:
+      - TZ=America/Sao_Paulo
+    command: >
+      /aws/us-east-1-s3 "/scripts/get_aws_ips.sh us-east-1 s3"
+      /aws/us-east-1-ec2 "/scripts/get_aws_ips.sh us-east-1 ec2"
+      /aws/us-east-2-s3 "/scripts/get_aws_ips.sh us-east-2 s3"
+      /aws/us-east-2-ec2 "/scripts/get_aws_ips.sh us-east-2 ec2"
+      /aws/sa-east-1-s3 "/scripts/get_aws_ips.sh sa-east-1 s3"
+      /aws/sa-east-1-ec2 "/scripts/get_aws_ips.sh sa-east-1 ec2"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shell2http.rule=Host(`${SERVER_NAME}`)"
+      - "traefik.http.services.shell2http.loadbalancer.server.port=8080"
